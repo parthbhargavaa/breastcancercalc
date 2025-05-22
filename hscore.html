@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H-Score Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #fdeef3, #f9dfe8);
+      padding: 40px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>H-Score Calculator</h1>
+  <p>This score combines staining intensity and percentage of cells to estimate immunohistochemical expression (range: 0–300).</p>
+  <label>Percent with No Staining (0):</label>
+  <input type="number" id="s0" min="0" max="100">
+  <label>Percent with Weak Staining (1+):</label>
+  <input type="number" id="s1" min="0" max="100">
+  <label>Percent with Moderate Staining (2+):</label>
+  <input type="number" id="s2" min="0" max="100">
+  <label>Percent with Strong Staining (3+):</label>
+  <input type="number" id="s3" min="0" max="100">
+  <button onclick="calculateHScore()">Calculate H-Score</button>
+  <div class="result" id="result"></div>
+  <script>
+    function calculateHScore() {
+      const s0 = parseFloat(document.getElementById('s0').value) || 0;
+      const s1 = parseFloat(document.getElementById('s1').value) || 0;
+      const s2 = parseFloat(document.getElementById('s2').value) || 0;
+      const s3 = parseFloat(document.getElementById('s3').value) || 0;
+      const total = s0 + s1 + s2 + s3;
+      if (total > 100) {
+        document.getElementById('result').innerText = 'Total percentage cannot exceed 100%.';
+        return;
+      }
+      const score = (1 * s1) + (2 * s2) + (3 * s3);
+      document.getElementById('result').innerText = 'H-Score:<a href='https://pubmed.ncbi.nlm.nih.gov/' target='_blank' style='color:#007bff; font-weight: normal; margin-left: 8px;'>Learn more</a> ' + score.toFixed(2);
+    }
+  </script>
+</body>
+</html>

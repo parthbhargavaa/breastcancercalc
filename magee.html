@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magee Equation Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #fbeff5, #f9dfe8);
+    }
+    nav {
+      background-color: #fff;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+    .equation-block {
+      border: 1px solid #ccc;
+      padding: 25px;
+      margin-top: 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    input[type=number], select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      white-space: pre-line;
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .summary {
+      margin-top: 10px;
+      background: #fef6e4;
+      padding: 12px;
+      border-radius: 10px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="magee.html">Magee</a>
+    <a href="hscore.html">H-Score</a>
+    <a href="npi.html">NPI</a>
+    <a href="pepi.html">PEPI</a>
+  </nav>
+  <div class="container">
+    <h1>Magee Equations Calculator</h1>
+    <p>This calculator uses three Magee Equations to estimate the Oncotype DX recurrence score for ER-positive, HER2-negative breast cancer based on pathology data. The results can support shared decision-making but should not replace clinical judgment.</p>
+
+    <form id="mageeForm">
+      <div class="equation-block">
+        <h2>Input Parameters</h2>
+        <label>Nottingham Score (3–9):
+          <input type="number" id="nottingham" min="3" max="9" required>
+        </label>
+        <label>ER IHC H-Score (0–300):
+          <input type="number" id="erihc" min="0" max="300" required>
+        </label>
+        <label>PR IHC H-Score (0–300):
+          <input type="number" id="prihc" min="0" max="300" required>
+        </label>
+        <label>HER2 Status:
+          <select id="her2">
+            <option value="0">Negative</option>
+            <option value="1">Equivocal</option>
+            <option value="2">Positive</option>
+          </select>
+        </label>
+        <label>Tumor Size (cm):
+          <input type="number" id="tumor" min="0" step="0.1" required>
+        </label>
+        <label>Ki-67 Index (%):
+          <input type="number" id="ki67" min="0" max="100" required>
+        </label>
+        <button type="button" onclick="fillExample()">Use Example Input</button>
+        <button type="button" onclick="calculateMagee()">Calculate</button>
+      </div>
+    </form>
+
+    <div class="result" id="result"></div>
+    <div class="summary" id="summary"></div>
+  </div>
+
+  <script>
+    function calculateMagee() {
+      const n = parseFloat(document.getElementById('nottingham').value);
+      const e = parseFloat(document.getElementById('erihc').value);
+      const p = parseFloat(document.getElementById('prihc').value);
+      const h = parseInt(document.getElementById('her2').value);
+      const t = parseFloat(document.getElementById('tumor').value);
+      const k = parseFloat(document.getElementById('ki67').value);
+
+      const her2_map = [0, 0.77681, 11.58134];
+      const her2_me2 = [0, 1.82921, 11.51378];
+      const her2_me3 = [0, 1.46495, 12.75525];
+
+      const me1 = 15.31385 + n*1.4055 - 0.01924*e - 0.02925*p + her2_map[h] + t*0.78677 + k*0.13269;
+      const me2 = 18.8042 + n*2.34123 - 0.03749*e - 0.03065*p + her2_me2[h] + t*0.04267;
+      const me3 = 24.30812 - 0.02177*e - 0.02884*p + her2_me3[h] + k*0.18649;
+
+      const interpret = (score) => {
+        if (score < 18) return 'Low Risk (like Oncotype DX <18)';
+        else if (score <= 30) return 'Intermediate Risk (18–30)';
+        else return 'High Risk (>30)';
+      };
+
+      document.getElementById('result').innerText =
+        `Magee Equation 1:<a href='https://pubmed.ncbi.nlm.nih.gov/' target='_blank' style='color:#007bff; font-weight: normal; margin-left: 8px;'>Learn more</a> ${me1.toFixed(2)}\n→ ${interpret(me1)}\n\n` +
+        `Magee Equation 2: ${me2.toFixed(2)}\n→ ${interpret(me2)}\n\n` +
+        `Magee Equation 3: ${me3.toFixed(2)}\n→ ${interpret(me3)}`;
+
+      document.getElementById('summary').innerText =
+        "These scores are intended to estimate recurrence risk based on pathology findings. If all three equations show low or intermediate risk, it may suggest a favorable outcome and lower likelihood of benefit from chemotherapy. However, please consult your physician to interpret the result in your clinical context.";
+    }
+
+    function fillExample() {
+      document.getElementById('nottingham').value = 6;
+      document.getElementById('erihc').value = 200;
+      document.getElementById('prihc').value = 120;
+      document.getElementById('her2').value = 0;
+      document.getElementById('tumor').value = 2.5;
+      document.getElementById('ki67').value = 15;
+    }
+  </script>
+</body>
+</html>

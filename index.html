@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breast Cancer Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #fdeef3, #f9dfe8);
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    p.intro {
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card h2 {
+      margin-top: 0;
+    }
+    .card a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Breast Cancer Calculator</h1>
+    <p class="intro">A one-stop platform for evidence-based, pathology-informed breast cancer decision support tools, designed to empower patients and professionals alike.</p>
+
+    <div class="card">
+      <h2><a href="magee.html">Magee Equations Calculator</a></h2>
+      <p>Estimates recurrence risk scores based on standard pathology metrics (ER/PR, HER2, Nottingham score, Ki-67, tumor size). Intended to approximate Oncotype DX.</p>
+    </div>
+
+    <div class="card">
+      <h2><a href="hscore.html">H-Score Calculator</a></h2>
+      <p>Semi-quantitative scoring system based on staining intensity and percentage for IHC markers like ER and PR.</p>
+    </div>
+
+    <div class="card">
+      <h2><a href="npi.html">Nottingham Prognostic Index</a></h2>
+      <p>Combines tumor size, nodal status, and grade to estimate 10-year survival. Based on long-term prognostic studies.</p>
+    </div>
+
+    <div class="card">
+      <h2><a href="pepi.html">PEPI Score Calculator</a></h2>
+      <p>Used for patients post-endocrine therapy to stratify relapse risk based on tumor stage, nodal status, Ki-67, and ER.</p>
+    </div>
+
+    <footer>
+<div style="text-align:center; margin-top: 30px;">
+  <a href="https://www.mdanderson.org/research/research-resources/clinical-tools-and-resources/calculators/residual-cancer-burden-calculator.html" target="_blank"
+     style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 6px;">
+    Residual Cancer Burden Calculator (external)
+  </a>
+</div>
+
+      This website is for educational and informational purposes only and does not replace clinical judgment. Consult a physician for all medical decisions.<br>
+      With gratitude to <a href="https://www.path.pitt.edu/people/rohit-bhargava-md" target="_blank">Dr. Rohit Bhargava</a> for his foundational work on the Magee Equations.
+    </footer>
+  </div>
+</body>
+</html>
