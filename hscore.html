@@ -43,6 +43,15 @@
   </style>
 </head>
 <body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="magee.html">Magee</a>
+  <a href="hscore.html">H-Score</a>
+  <a href="npi.html">NPI</a>
+  <a href="pepi.html">PEPI</a>
+</nav>
+
   <h1>H-Score Calculator</h1>
   <p>This score combines staining intensity and percentage of cells to estimate immunohistochemical expression (range: 0–300).</p>
   <label>Percent with No Staining (0):</label>
@@ -54,7 +63,15 @@
   <label>Percent with Strong Staining (3+):</label>
   <input type="number" id="s3" min="0" max="100">
   <button onclick="calculateHScore()">Calculate H-Score</button>
-  <div class="result" id="result"></div>
+  <div class="result" id="result">
+<div style="margin-top: 15px;">
+  <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank"
+     style="display:inline-block; padding: 8px 14px; font-size: 14px; background-color: #007bff; color: white; border-radius: 6px; text-decoration: none;">
+    More Information
+  </a>
+</div>
+
+</div>
   <script>
     function calculateHScore() {
       const s0 = parseFloat(document.getElementById('s0').value) || 0;
@@ -69,6 +86,7 @@
       const score = (1 * s1) + (2 * s2) + (3 * s3);
       document.getElementById('result').innerText = 'H-Score:<a href='https://pubmed.ncbi.nlm.nih.gov/' target='_blank' style='color:#007bff; font-weight: normal; margin-left: 8px;'>Learn more</a> ' + score.toFixed(2);
     }
-  </script>
+  document.getElementById('result').innerText = 'H-Score result';
+</script>
 </body>
 </html>

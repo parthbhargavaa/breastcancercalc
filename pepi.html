@@ -43,6 +43,15 @@
   </style>
 </head>
 <body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="magee.html">Magee</a>
+  <a href="hscore.html">H-Score</a>
+  <a href="npi.html">NPI</a>
+  <a href="pepi.html">PEPI</a>
+</nav>
+
   <h1>PEPI Score Calculator</h1>
   <p>Used post-endocrine therapy to estimate relapse risk using stage, nodes, Ki-67, and ER Allred score.</p>
   <label>Pathologic T Stage:</label>
@@ -60,7 +69,15 @@
   <label>ER Allred Score:</label>
   <input type="number" id="erAllred" min="0" max="8">
   <button onclick="calculatePEPI()">Calculate PEPI</button>
-  <div class="result" id="result"></div>
+  <div class="result" id="result">
+<div style="margin-top: 15px;">
+  <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank"
+     style="display:inline-block; padding: 8px 14px; font-size: 14px; background-color: #007bff; color: white; border-radius: 6px; text-decoration: none;">
+    More Information
+  </a>
+</div>
+
+</div>
   <script>
     function calculatePEPI() {
       const stage = parseInt(document.getElementById('stage').value);
@@ -76,6 +93,7 @@
       const total = stage + nodes + kiScore + erScore;
       document.getElementById('result').innerText = 'PEPI Score:<a href='https://pubmed.ncbi.nlm.nih.gov/' target='_blank' style='color:#007bff; font-weight: normal; margin-left: 8px;'>Learn more</a> ' + total;
     }
-  </script>
+  document.getElementById('result').innerText = 'PEPI result';
+</script>
 </body>
 </html>

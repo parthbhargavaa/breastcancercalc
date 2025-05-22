@@ -43,6 +43,15 @@
   </style>
 </head>
 <body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="magee.html">Magee</a>
+  <a href="hscore.html">H-Score</a>
+  <a href="npi.html">NPI</a>
+  <a href="pepi.html">PEPI</a>
+</nav>
+
   <h1>Nottingham Prognostic Index Calculator</h1>
   <p>The NPI estimates 10-year survival using tumor size, nodal status, and tumor grade.</p>
   <label>Tumor Size (cm):</label>
@@ -56,7 +65,15 @@
   <label>Tumor Grade (1–3):</label>
   <input type="number" id="grade" min="1" max="3">
   <button onclick="calculateNPI()">Calculate NPI</button>
-  <div class="result" id="result"></div>
+  <div class="result" id="result">
+<div style="margin-top: 15px;">
+  <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank"
+     style="display:inline-block; padding: 8px 14px; font-size: 14px; background-color: #007bff; color: white; border-radius: 6px; text-decoration: none;">
+    More Information
+  </a>
+</div>
+
+</div>
   <script>
     function calculateNPI() {
       const size = parseFloat(document.getElementById('tumorSize').value);
@@ -69,6 +86,7 @@
       const score = (0.2 * size) + nodes + grade;
       document.getElementById('result').innerText = 'NPI Score:<a href='https://pubmed.ncbi.nlm.nih.gov/' target='_blank' style='color:#007bff; font-weight: normal; margin-left: 8px;'>Learn more</a> ' + score.toFixed(2);
     }
-  </script>
+  document.getElementById('result').innerText = 'NPI result';
+</script>
 </body>
 </html>
