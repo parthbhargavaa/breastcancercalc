@@ -1,115 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Breast Cancer Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom, #fdeef3, #f9dfe8);
-      color: #333;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    p.intro {
-      text-align: center;
-      font-size: 1.2em;
-      margin-bottom: 30px;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-    }
-    .card:hover {
-      transform: scale(1.02);
-    }
-    .card h2 {
-      margin-top: 0;
-    }
-    .card a {
-      text-decoration: none;
-      color: #007bff;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9em;
-      color: #666;
-    }
-    nav {
-      background-color: #fff;
-      padding: 10px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      margin: 0;
-    }
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #007bff;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Pathology Calculators</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .calculator-block {
+            background: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .calculator-block h5 {
+            margin-bottom: 0.5rem;
+        }
+        .badge-ext {
+            background: #6c757d;
+            font-size: 0.85em;
+            margin-left: 0.5em;
+        }
+        body {
+            background: #f6f8fa;
+        }
+        .section-title {
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #0d6efd;
+            letter-spacing: 0.01em;
+        }
+        .disclaimer-section {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+    </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">Home</a>
+        </div>
+    </nav>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="magee.html">Magee</a>
-  <a href="hscore.html">H-Score</a>
-  <a href="npi.html">NPI</a>
-  <a href="pepi.html">PEPI</a>
-</nav>
+    <div class="container my-4">
+        <h1 class="mb-3">Breast Pathology Calculators</h1>
+        <p class="lead">
+            This website provides a suite of breast cancer risk and pathology calculators intended for use by healthcare professionals only.
+        </p>
 
-  <div class="container">
-    <h1>Breast Cancer Calculator</h1>
-    <p class="intro">A one-stop platform for evidence-based, pathology-informed breast cancer decision support tools, designed to empower patients and professionals alike.</p>
+        <!-- CALCULATORS FREQUENTLY USED BY PATHOLOGISTS -->
+        <div class="section-title">Calculators Frequently Used by Pathologists</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Magee Equations Calculator</h5>
+                    <p>Estimate Oncotype DX recurrence score using pathology data. Contains all information from the UPMC Magee Equations webpage.</p>
+                    <a href="magee.html" class="btn btn-primary">Open Calculator</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>H-score Calculator</h5>
+                    <p>
+                        Calculates the semi-quantitative immunohistochemical H-score for ER, PR, or other stains. The H-score is the sum of the percent staining multiplied by intensity (0–3). Range: 0–300.
+                    </p>
+                    <a href="#" class="btn btn-secondary disabled">Coming Soon</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Nottingham Prognostic Index Calculator</h5>
+                    <p>
+                        Calculates the Nottingham Prognostic Index (NPI) for breast cancer using tumor size, lymph node status, and grade.
+                    </p>
+                    <a href="#" class="btn btn-secondary disabled">Coming Soon</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Pre-operative Endocrine Prognostic Index (PEPI score) Calculator</h5>
+                    <p>
+                        Calculates PEPI score for those who received neoadjuvant endocrine therapy alone, based on pT stage, pN stage, Ki67 level, and ER status.
+                    </p>
+                    <a href="#" class="btn btn-secondary disabled">Coming Soon</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Residual Cancer Burden Calculator <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        Tool for residual cancer burden assessment after neoadjuvant therapy.
+                    </p>
+                    <a href="https://www.mdanderson.org/breastcancer_RCB" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+        </div>
 
-    <div class="card">
-      <h2><a href="magee.html">Magee Equations Calculator</a></h2>
-      <p>Estimates recurrence risk scores based on standard pathology metrics (ER/PR, HER2, Nottingham score, Ki-67, tumor size). Intended to approximate Oncotype DX.</p>
+        <!-- MODELS FOR ASSESSING THE RISK OF DEVELOPING BREAST CANCER -->
+        <div class="section-title">Models for Assessing the Risk of Developing Breast Cancer</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Breast Cancer Risk Assessment Tool (Gail Model) <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        NCI calculator for estimating absolute risk of developing breast cancer over 5 years and lifetime.
+                    </p>
+                    <a href="https://bcrisktool.cancer.gov/calculator.html" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Tyrer-Cuzick Risk Assessment Calculator <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        Tyrer-Cuzick (IBIS) risk calculator for lifetime breast cancer risk assessment.
+                    </p>
+                    <a href="https://magview.com/ibis-risk-calculator/" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Breast Cancer Surveillance Consortium (BCSC) Invasive Breast Cancer Risk Calculator <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        BCSC calculator for estimating 6-year cumulative risk of developing advanced breast cancer.
+                    </p>
+                    <a href="https://tools.bcsc-scc.org/BC5yearRisk/bc_risk_calculator.htm" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODELS FOR ASSESSING THE RISK OF RECURRENCE... -->
+        <div class="section-title">Models for Assessing the Risk of Recurrence from Previously Diagnosed Invasive Breast Cancer and Possibly Guide Treatment</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Predict Tool <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        Online tool to estimate how different treatments for early invasive breast cancer might improve survival rates after surgery.
+                    </p>
+                    <a href="https://breast.predict.nhs.uk/" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>CTS5 Calculator <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        CTS5 model for predicting late distant metastasis for ER-positive breast cancer after endocrine therapy.
+                    </p>
+                    <a href="https://www.cts5-calculator.com/" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTHER CALCULATORS -->
+        <div class="section-title">Other Calculators</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Breast Cancer Calculators from MD Anderson Cancer Center <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        Suite of breast cancer calculators from MD Anderson Cancer Center.
+                    </p>
+                    <a href="https://www.mdanderson.org/research/research-resources/clinical-tools-and-resources/clinical-calculators.html" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-block">
+                    <h5>Breast Cancer Risk Assessment Tool for Women with Benign Breast Disease <span class="badge badge-ext">[External Link]</span></h5>
+                    <p>
+                        Mayo Clinic tool for risk assessment in women with benign breast disease.
+                    </p>
+                    <a href="https://www.mayoclinic.org/apps/bbd-risktool" class="btn btn-outline-primary" target="_blank" rel="noopener">Open [External Link]</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- DISCLAIMER -->
+        <div class="disclaimer-section">
+            <strong>Disclaimer:</strong><br>
+            These calculators should only be used by medical professionals who understand its usefulness and limitations. Medical professionals should use these calculators at their own discretion and this information should not be used for the diagnosis or treatment of any health problem or disease. The information is not intended to replace clinical judgment or guide individual patient care in any manner and is not provided in the course of a professional relationship between a health care provider and a patient. The website creators are not liable for any direct, indirect, incidental, special, consequential or punitive damages arising in any way from the actions taken by medical professionals based on the information provided by the calculators or any other information set forth herein. The creators of this website hereby disclaim any warranty of any kind, express or implied, including but not limited to the implied warranties of title, noninfringement, merchantability and fitness for a particular use or purpose.
+        </div>
     </div>
 
-    <div class="card">
-      <h2><a href="hscore.html">H-Score Calculator</a></h2>
-      <p>Semi-quantitative scoring system based on staining intensity and percentage for IHC markers like ER and PR.</p>
-    </div>
-
-    <div class="card">
-      <h2><a href="npi.html">Nottingham Prognostic Index</a></h2>
-      <p>Combines tumor size, nodal status, and grade to estimate 10-year survival. Based on long-term prognostic studies.</p>
-    </div>
-
-    <div class="card">
-      <h2><a href="pepi.html">PEPI Score Calculator</a></h2>
-      <p>Used for patients post-endocrine therapy to stratify relapse risk based on tumor stage, nodal status, Ki-67, and ER.</p>
-    </div>
-
-    <footer>
-<div style="text-align:center; margin-top: 30px;">
-  <a href="https://www.mdanderson.org/research/research-resources/clinical-tools-and-resources/calculators/residual-cancer-burden-calculator.html" target="_blank"
-     style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 6px;">
-    Residual Cancer Burden Calculator (external)
-  </a>
-</div>
-
-      This website is for educational and informational purposes only and does not replace clinical judgment. Consult a physician for all medical decisions.<br>
-      With gratitude to <a href="https://www.path.pitt.edu/people/rohit-bhargava-md" target="_blank">Dr. Rohit Bhargava</a> for his foundational work on the Magee Equations.
-    </footer>
-  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html><div class="result" id="result"></div>
+</html>
