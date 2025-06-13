@@ -1,145 +1,316 @@
-<!-- Previous head and navigation sections remain unchanged -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magee Equations Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .calculator-container { max-width: 800px; margin: 2rem auto; padding: 20px; }
+        .form-group { margin-bottom: 1.2rem; }
+        .result-alert { display: none; margin-top: 1.5rem; }
+        input[type="number"] { max-width: 200px; }
+        .clinical-info img { max-width: 100%; height: auto; margin-bottom: 1rem; }
+        .accordion-button:not(.collapsed) { color: #0d6efd; background-color: #e7f1ff; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Breast Cancer Calculators</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="magee.html">Magee</a>
+                <a class="nav-link" href="hscore.html">H-Score</a>
+                <a class="nav-link" href="npi.html">NPI</a>
+                <a class="nav-link" href="pepi.html">PEPI</a>
+            </div>
+        </div>
+    </nav>
 
-<div class="calculator-container">
-    <!-- Existing calculator form remains unchanged -->
-
-    <div class="result-alert alert alert-primary" role="alert">
-        <!-- Existing results display remains unchanged -->
-    </div>
-
-    <div class="clinical-info mt-4">
-        <div class="accordion" id="clinicalAccordion">
-            <!-- Magee Decision Algorithm -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" 
-                            data-bs-target="#algorithm" aria-expanded="true">
-                        Magee Decision Algorithm™
-                    </button>
-                </h2>
-                <div id="algorithm" class="accordion-collapse collapse show" 
-                     data-bs-parent="#clinicalAccordion">
-                    <div class="accordion-body">
-                        <img src="https://path.upmc.edu/onlineTools/magee_algorithm.png" 
-                             alt="Magee Decision Algorithm Flowchart" class="img-fluid mb-3">
-                        <p>Helps triage cases for molecular testing using equation results and mitotic activity score.</p>
-                        
-                        <h5>Application Guidelines</h5>
-                        <ul>
-                            <li><strong>Do Not Send:</strong> All scores <18, or 18-25 with mitosis score 1</li>
-                            <li><strong>Send for Testing:</strong> Any score >25 or 18-25 with mitosis score ≥2</li>
-                        </ul>
-                    </div>
-                </div>
+    <div class="calculator-container">
+        <h2>Magee Equations Calculator</h2>
+        <p>Estimates Oncotype DX recurrence score using pathology data (ER-positive, HER2-negative breast cancer).</p>
+        
+        <form id="mageeForm">
+            <div class="form-group">
+                <label>Nottingham Score (3-9)</label>
+                <input type="number" class="form-control" id="nottingham" min="3" max="9" step="1" required>
             </div>
 
-            <!-- Clinical Background -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" 
-                            data-bs-toggle="collapse" data-bs-target="#background">
-                        Clinical Background
-                    </button>
-                </h2>
-                <div id="background" class="accordion-collapse collapse" 
-                     data-bs-parent="#clinicalAccordion">
-                    <div class="accordion-body">
-                        <h5>Development History</h5>
-                        <ul>
-                            <li>Derived from 800+ cases (2004-2009)</li>
-                            <li>Validated on 200+ independent cases</li>
-                            <li>Updated per TAILORx trial criteria</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label>ER IHC Score (0-300)</label>
+                <input type="number" class="form-control" id="erIHC" min="0" max="300" step="1" required>
             </div>
 
-            <!-- HER2 Classification -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" 
-                            data-bs-toggle="collapse" data-bs-target="#her2Criteria">
-                        HER2 Classification Criteria
-                    </button>
-                </h2>
-                <div id="her2Criteria" class="accordion-collapse collapse" 
-                     data-bs-parent="#clinicalAccordion">
-                    <div class="accordion-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>IHC</th>
-                                    <th>FISH</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Negative</td>
-                                    <td>0/1+ or 2+</td>
-                                    <td>&lt;4 copies/cell</td>
-                                </tr>
-                                <tr>
-                                    <td>Equivocal</td>
-                                    <td>2+</td>
-                                    <td>4-5.9 copies/cell</td>
-                                </tr>
-                                <tr>
-                                    <td>Positive</td>
-                                    <td>3+</td>
-                                    <td>≥6 copies/cell</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label>PR IHC Score (0-300)</label>
+                <input type="number" class="form-control" id="prIHC" min="0" max="300" step="1" required>
             </div>
 
-            <!-- H-Score Calculation -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" 
-                            data-bs-toggle="collapse" data-bs-target="#hscore">
-                        H-Score Calculation
-                    </button>
-                </h2>
-                <div id="hscore" class="accordion-collapse collapse" 
-                     data-bs-parent="#clinicalAccordion">
-                    <div class="accordion-body">
-                        <p>Calculated as: (0×% negative) + (1×% weak) + (2×% moderate) + (3×% strong)</p>
-                        <pre class="bg-light p-3">
+            <div class="form-group">
+                <label>HER2 Status</label>
+                <select class="form-control" id="her2" required>
+                    <option value="negative">Negative</option>
+                    <option value="equivocal">Equivocal</option>
+                    <option value="positive">Positive</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tumor Size (cm)</label>
+                <input type="number" class="form-control" id="tumorSize" min="0.1" max="10.0" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label>Ki-67 Index (0-100)</label>
+                <input type="number" class="form-control" id="ki67" min="0" max="100" step="0.1" required>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="calculateMagee()">Calculate</button>
+        </form>
+
+        <div class="result-alert alert alert-primary" role="alert">
+            <h4>Average Recurrence Score: <span id="averageScore">-</span></h4>
+            <p class="mb-0">Equation 1: <span id="eq1"></span></p>
+            <p class="mb-0">Equation 2: <span id="eq2"></span></p>
+            <p class="mb-0">Equation 3: <span id="eq3"></span></p>
+            <p class="mt-2">Interpretation: <span id="interpretation"></span></p>
+        </div>
+
+        <div class="clinical-info mt-4">
+            <div class="accordion" id="clinicalAccordion">
+                <!-- Magee Decision Algorithm -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                data-bs-target="#algorithm" aria-expanded="true">
+                            Magee Decision Algorithm™
+                        </button>
+                    </h2>
+                    <div id="algorithm" class="accordion-collapse collapse show" 
+                         data-bs-parent="#clinicalAccordion">
+                        <div class="accordion-body">
+                            <img src="https://path.upmc.edu/onlineTools/magee_algorithm.png" 
+                                 alt="Magee Decision Algorithm Flowchart" class="img-fluid mb-3">
+                            <p>The Magee Decision Algorithm™ helps in triaging cases for molecular testing. Use Magee Equation results and mitotic activity score (part of tumor grading) to triage cases.</p>
+                            <ul>
+                                <li><strong>Do Not Send:</strong> All scores &lt;18, or 18-25 with mitosis score 1</li>
+                                <li><strong>Send for Testing:</strong> Any score &gt;25 or 18-25 with mitosis score ≥2</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Clinical Background -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#background">
+                            Background
+                        </button>
+                    </h2>
+                    <div id="background" class="accordion-collapse collapse" 
+                         data-bs-parent="#clinicalAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                Oncotype DX® is a commercial assay used to estimate the risk of distant recurrence for patients with ER positive, lymph node negative breast cancers. It is reported as a numerical score (recurrence score or RS) ranging from 0-100. Magee Equations were derived using standard histopathologic factors and immunohistochemical markers to estimate the recurrence score, validated on large cohorts. The Magee Decision Algorithm integrates these equations with the mitotic activity score for optimal triage.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- How to Use the Equations and H-score -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#howto">
+                            How to Use the Equations & H-Score
+                        </button>
+                    </h2>
+                    <div id="howto" class="accordion-collapse collapse" 
+                         data-bs-parent="#clinicalAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                All the required data is generally present in the surgical pathology report. H-scores are calculated as the sum of the percent staining multiplied by an ordinal value corresponding to the intensity level (0=none, 1=weak, 2=moderate, 3=strong). The resulting score ranges from 0 (no staining) to 300 (diffuse intense staining).
+                            </p>
+                            <pre class="bg-light p-3">
 Example:
 10% negative → 0×10 = 0
 30% weak → 1×30 = 30
 40% moderate → 2×40 = 80
 20% strong → 3×20 = 60
-Total H-Score = 0 + 30 + 80 + 60 = 170</pre>
+Total H-Score = 0 + 30 + 80 + 60 = 170
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+                <!-- HER2 Classification -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#her2Criteria">
+                            HER2 Classification Criteria
+                        </button>
+                    </h2>
+                    <div id="her2Criteria" class="accordion-collapse collapse" 
+                         data-bs-parent="#clinicalAccordion">
+                        <div class="accordion-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>IHC</th>
+                                        <th>FISH</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Negative</td>
+                                        <td>0/1+ or 2+</td>
+                                        <td>&lt;4 copies/cell</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Equivocal</td>
+                                        <td>2+</td>
+                                        <td>4-5.9 copies/cell</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Positive</td>
+                                        <td>3+</td>
+                                        <td>≥6 copies/cell</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Neoadjuvant Chemotherapy and Magee Equation 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#neoadjuvant">
+                            Neoadjuvant Chemotherapy and Magee Equation 3
+                        </button>
+                    </h2>
+                    <div id="neoadjuvant" class="accordion-collapse collapse" 
+                         data-bs-parent="#clinicalAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>ME3 score &lt;18: pCR rate of 0%</li>
+                                <li>ME3 score 18-25: pCR rate of &lt;5%</li>
+                                <li>ME3 score &gt;25 but &lt;31: pCR rate of 14%</li>
+                                <li>ME3 score ≥31: pCR rate of 35-40%</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- References -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#references">
+                            References
+                        </button>
+                    </h2>
+                    <div id="references" class="accordion-collapse collapse" 
+                         data-bs-parent="#clinicalAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>
+                                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/30395177" target="_blank">
+                                        Bhargava et al. (2019) - Validation Study
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/32203092" target="_blank">
+                                        Bhargava et al. (2020) - Clinical Implementation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/28548119" target="_blank">
+                                        Farrugia et al. (2017) - Neoadjuvant Response
+                                    </a>
+                                </li>
+                                <!-- Add more references as needed -->
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="references mt-4">
-            <h5>Key References</h5>
-            <ul>
-                <li>
-                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/30395177" target="_blank">
-                        Bhargava et al. (2019) - Validation Study
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/32203092" target="_blank">
-                        Bhargava et al. (2020) - Clinical Implementation
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/28548119" target="_blank">
-                        Farrugia et al. (2017) - Neoadjuvant Response
-                    </a>
-                </li>
-            </ul>
-        </div>
     </div>
-</div>
 
-<!-- Existing script section remains unchanged -->
+    <script>
+        function calculateMagee() {
+            // Get and clamp input values
+            const nottingham = Math.min(9, Math.max(3, parseFloat(document.getElementById('nottingham').value)));
+            const erIHC = Math.min(300, Math.max(0, parseFloat(document.getElementById('erIHC').value)));
+            const prIHC = Math.min(300, Math.max(0, parseFloat(document.getElementById('prIHC').value)));
+            const tumorSize = Math.min(10, Math.max(0.1, parseFloat(document.getElementById('tumorSize').value)));
+            const ki67 = Math.min(100, Math.max(0, parseFloat(document.getElementById('ki67').value)));
+            const her2Status = document.getElementById('her2').value;
+
+            // Calculate individual equations
+            const eq1 = 15.31385 + 
+                      (nottingham * 1.4055) + 
+                      (erIHC * -0.01924) + 
+                      (prIHC * -0.02925) + 
+                      getHer2Value(her2Status, 1) + 
+                      (tumorSize * 0.78677) + 
+                      (ki67 * 0.13269);
+
+            const eq2 = 18.8042 + 
+                      (nottingham * 2.34123) + 
+                      (erIHC * -0.03749) + 
+                      (prIHC * -0.03065) + 
+                      getHer2Value(her2Status, 2) + 
+                      (tumorSize * 0.04267);
+
+            const eq3 = 24.30812 + 
+                      (erIHC * -0.02177) + 
+                      (prIHC * -0.02884) + 
+                      getHer2Value(her2Status, 3) + 
+                      (ki67 * 0.18649);
+
+            // Calculate average
+            const average = (eq1 + eq2 + eq3) / 3;
+
+            // Display results
+            document.getElementById('eq1').textContent = eq1.toFixed(1);
+            document.getElementById('eq2').textContent = eq2.toFixed(1);
+            document.getElementById('eq3').textContent = eq3.toFixed(1);
+            document.getElementById('averageScore').textContent = average.toFixed(1);
+            document.getElementById('interpretation').textContent = getInterpretation(average);
+            document.querySelector('.result-alert').style.display = 'block';
+        }
+
+        function getHer2Value(status, equationNum) {
+            const values = {
+                1: { negative: 0, equivocal: 0.77681, positive: 11.58134 },
+                2: { negative: 0, equivocal: 1.82921, positive: 11.51378 },
+                3: { negative: 0, equivocal: 1.46495, positive: 12.75525 }
+            };
+            return values[equationNum][status];
+        }
+
+        function getInterpretation(score) {
+            if (score < 18) return 'Low recurrence risk';
+            if (score <= 30) return 'Intermediate recurrence risk';
+            return 'High recurrence risk';
+        }
+
+        // Input validation
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const max = parseFloat(this.max);
+                const min = parseFloat(this.min);
+                let value = parseFloat(this.value);
+                
+                if (!isNaN(value)) {
+                    if (value > max) this.value = max;
+                    if (value < min) this.value = min;
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
