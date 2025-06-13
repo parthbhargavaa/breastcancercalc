@@ -36,13 +36,13 @@
             </div>
 
             <div class="form-group">
-                <label>ER H-Score (0-300)</label>
-                <input type="number" class="form-control" id="erHScore" min="0" max="300" step="1" required>
+                <label>ER IHC Score (0-300)</label>
+                <input type="number" class="form-control" id="erIHC" min="0" max="300" step="1" required>
             </div>
 
             <div class="form-group">
-                <label>PR H-Score (0-300)</label>
-                <input type="number" class="form-control" id="prHScore" min="0" max="300" step="1" required>
+                <label>PR IHC Score (0-300)</label>
+                <input type="number" class="form-control" id="prIHC" min="0" max="300" step="1" required>
             </div>
 
             <div class="form-group">
@@ -60,7 +60,7 @@
             </div>
 
             <div class="form-group">
-                <label>Ki-67 Percentage (0-100)</label>
+                <label>Ki-67 Index (0-100)</label>
                 <input type="number" class="form-control" id="ki67" min="0" max="100" step="0.1" required>
             </div>
 
@@ -68,8 +68,11 @@
         </form>
 
         <div class="result-alert alert alert-primary" role="alert">
-            <h4>Average Magee Equation Score: <span id="averageScore">-</span></h4>
-            <p class="mb-0">Interpretation: <span id="interpretation"></span></p>
+            <h4>Average Recurrence Score: <span id="averageScore">-</span></h4>
+            <p class="mb-0">Equation 1: <span id="eq1"></span></p>
+            <p class="mb-0">Equation 2: <span id="eq2"></span></p>
+            <p class="mb-0">Equation 3: <span id="eq3"></span></p>
+            <p class="mt-2">Interpretation: <span id="interpretation"></span></p>
         </div>
 
         <a href="https://path.upmc.edu/onlineTools/mageeequations.html" 
@@ -81,34 +84,55 @@
 
     <script>
         function calculateMagee() {
-            // Get input values with clamping to enforce limits
+            // Get and clamp input values
             const nottingham = Math.min(9, Math.max(3, parseFloat(document.getElementById('nottingham').value)));
-            const erHScore = Math.min(300, Math.max(0, parseFloat(document.getElementById('erHScore').value)));
-            const prHScore = Math.min(300, Math.max(0, parseFloat(document.getElementById('prHScore').value)));
+            const erIHC = Math.min(300, Math.max(0, parseFloat(document.getElementById('erIHC').value)));
+            const prIHC = Math.min(300, Math.max(0, parseFloat(document.getElementById('prIHC').value)));
             const tumorSize = Math.min(10, Math.max(0.1, parseFloat(document.getElementById('tumorSize').value)));
             const ki67 = Math.min(100, Math.max(0, parseFloat(document.getElementById('ki67').value)));
-            
-            // HER2 scoring
-            const her2Scores = { negative: 0, equivocal: 0.5, positive: 1 };
-            const her2Score = her2Scores[document.getElementById('her2').value];
+            const her2Status = document.getElementById('her2').value;
 
             // Calculate individual equations
-            const equation1 = (0.93 * nottingham) + (0.08 * erHScore) - (0.09 * prHScore) + 
-                            (4.87 * her2Score) + (0.97 * tumorSize) + (0.12 * ki67) - 4.31;
-            
-            const equation2 = (1.01 * nottingham) + (0.09 * erHScore) - (0.10 * prHScore) + 
-                            (5.20 * her2Score) + (1.02 * tumorSize) - 4.34;
-            
-            const equation3 = (0.07 * erHScore) - (0.09 * prHScore) + 
-                            (4.60 * her2Score) + (0.11 * ki67) + 11.36;
+            const eq1 = 15.31385 + 
+                      (nottingham * 1.4055) + 
+                      (erIHC * -0.01924) + 
+                      (prIHC * -0.02925) + 
+                      getHer2Value(her2Status, 1) + 
+                      (tumorSize * 0.78677) + 
+                      (ki67 * 0.13269);
+
+            const eq2 = 18.8042 + 
+                      (nottingham * 2.34123) + 
+                      (erIHC * -0.03749) + 
+                      (prIHC * -0.03065) + 
+                      getHer2Value(her2Status, 2) + 
+                      (tumorSize * 0.04267);
+
+            const eq3 = 24.30812 + 
+                      (erIHC * -0.02177) + 
+                      (prIHC * -0.02884) + 
+                      getHer2Value(her2Status, 3) + 
+                      (ki67 * 0.18649);
 
             // Calculate average
-            const average = (equation1 + equation2 + equation3) / 3;
-            
+            const average = (eq1 + eq2 + eq3) / 3;
+
             // Display results
+            document.getElementById('eq1').textContent = eq1.toFixed(1);
+            document.getElementById('eq2').textContent = eq2.toFixed(1);
+            document.getElementById('eq3').textContent = eq3.toFixed(1);
             document.getElementById('averageScore').textContent = average.toFixed(1);
             document.getElementById('interpretation').textContent = getInterpretation(average);
             document.querySelector('.result-alert').style.display = 'block';
+        }
+
+        function getHer2Value(status, equationNum) {
+            const values = {
+                1: { negative: 0, equivocal: 0.77681, positive: 11.58134 },
+                2: { negative: 0, equivocal: 1.82921, positive: 11.51378 },
+                3: { negative: 0, equivocal: 1.46495, positive: 12.75525 }
+            };
+            return values[equationNum][status];
         }
 
         function getInterpretation(score) {
@@ -117,7 +141,7 @@
             return 'High recurrence risk';
         }
 
-        // Input validation for real-time clamping
+        // Input validation
         document.querySelectorAll('input[type="number"]').forEach(input => {
             input.addEventListener('input', function() {
                 const max = parseFloat(this.max);
