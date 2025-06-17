@@ -1,99 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PEPI Score Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #fdeef3, #f9dfe8);
-      padding: 40px;
-      max-width: 700px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin: 15px 0 5px;
-    }
-    select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-      font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPI Score Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f6f8fa;
+        }
+        .calculator-container { 
+            max-width: 800px; 
+            margin: 2rem auto; 
+            padding: 20px; 
+        }
+        .form-group { 
+            margin-bottom: 1.2rem; 
+        }
+        .result-alert { 
+            display: none; 
+            margin-top: 1.5rem; 
+        }
+        input[type="number"], select { 
+            max-width: 200px; 
+        }
+        .accordion-button:not(.collapsed) { 
+            color: #0d6efd; 
+            background-color: #e7f1ff; 
+        }
+        pre.bg-light { 
+            white-space: pre-wrap; 
+        }
+    </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">Home</a>
+        </div>
+    </nav>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="magee.html">Magee</a>
-  <a href="hscore.html">H-Score</a>
-  <a href="npi.html">NPI</a>
-  <a href="pepi.html">PEPI</a>
-</nav>
+    <div class="calculator-container">
+        <h2>Pre-operative Endocrine Prognostic Index (PEPI) Score Calculator</h2>
+        <p>
+            Calculates the PEPI score for professionals managing patients who received neoadjuvant endocrine therapy, based on pT stage, pN stage, Ki67 level, and ER status of the surgical specimen.
+        </p>
+        
+        <form id="pepiForm">
+            <div class="form-group">
+                <label>Pathological Tumor Size (pT stage):</label>
+                <select class="form-control" id="ptStage" required>
+                    <option value="">Select...</option>
+                    <option value="T1or2">T1 or T2</option>
+                    <option value="T3or4">T3 or T4</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Pathological Node Status (pN stage):</label>
+                <select class="form-control" id="pnStage" required>
+                    <option value="">Select...</option>
+                    <option value="negative">Negative</option>
+                    <option value="positive">Positive</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Ki67 Labeling Index (%):</label>
+                <input type="number" class="form-control" id="ki67" min="0" max="100" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label>Estrogen Receptor (ER) Allred Score (0–8):</label>
+                <input type="number" class="form-control" id="erAllred" min="0" max="8" step="1" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="calculatePEPI()">Calculate</button>
+            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC2556704/', '_blank')">More Information</button>
+        </form>
 
-  <h1>PEPI Score Calculator</h1>
-  <p>Used post-endocrine therapy to estimate relapse risk using stage, nodes, Ki-67, and ER Allred score.</p>
-  <label>Pathologic T Stage:</label>
-  <select id="stage">
-    <option value="0">T1/T2</option>
-    <option value="3">T3/T4</option>
-  </select>
-  <label>Nodal Status:</label>
-  <select id="nodes">
-    <option value="0">Negative</option>
-    <option value="3">Positive</option>
-  </select>
-  <label>Ki-67 (%):</label>
-  <input type="number" id="ki67" min="0" max="100">
-  <label>ER Allred Score:</label>
-  <input type="number" id="erAllred" min="0" max="8">
-  <button onclick="calculatePEPI()">Calculate PEPI</button>
-  <div class="result" id="result">
-<div style="margin-top: 15px;">
-  <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank"
-     style="display:inline-block; padding: 8px 14px; font-size: 14px; background-color: #007bff; color: white; border-radius: 6px; text-decoration: none;">
-    More Information
-  </a>
-</div>
+        <div class="result-alert alert alert-primary" role="alert">
+            <h4>PEPI Score: <span id="pepiResult">-</span></h4>
+            <p class="mb-0" id="riskGroup"></p>
+        </div>
 
-</div>
-  <script>
-    function calculatePEPI() {
-      const stage = parseInt(document.getElementById('stage').value);
-      const nodes = parseInt(document.getElementById('nodes').value);
-      const ki67 = parseFloat(document.getElementById('ki67').value);
-      const er = parseInt(document.getElementById('erAllred').value);
-      let kiScore = 0;
-      if (ki67 > 2.7 && ki67 <= 7.3) kiScore = 1;
-      else if (ki67 > 7.3 && ki67 <= 19.7) kiScore = 1;
-      else if (ki67 > 19.7 && ki67 <= 53.1) kiScore = 2;
-      else if (ki67 > 53.1) kiScore = 3;
-      const erScore = (er >= 3) ? 0 : 3;
-      const total = stage + nodes + kiScore + erScore;
-      document.getElementById('result').innerText = 'PEPI Score:<a href='https://pubmed.ncbi.nlm.nih.gov/' target='_blank' style='color:#007bff; font-weight: normal; margin-left: 8px;'>Learn more</a> ' + total;
-    }
-  document.getElementById('result').innerText = 'PEPI result';
-</script>
+        <div class="accordion mt-4" id="infoAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#infoCollapse" aria-expanded="true">
+                        More information
+                    </button>
+                </h2>
+                <div id="infoCollapse" class="accordion-collapse collapse show"
+                     data-bs-parent="#infoAccordion">
+                    <div class="accordion-body">
+                        <p>
+                            To obtain the preoperative endocrine prognostic index (PEPI) score, risk points for relapse-free survival (RFS) and breast cancer–specific survival (BCSS) are assigned depending on the hazard ratio (HR) given in the table below (from: Ellis MJ et al. J Natl Cancer Inst. 2008;100:1380-1388)[1]. The total PEPI score assigned is the sum of the risk points derived from the pT stage, pN stage, Ki67 level, and estrogen receptor (ER) status of the surgical specimen. A hazard ratio in the range of 1–2 receives one risk point; a hazard ratio in the 2–2.5 range, two risk points; a hazard ratio greater than 2.5, three risk points. The total risk point score for each case is the sum of all the risk points accumulated from the four factors in the model. For example, a T1N0 tumor, Ki67 staining percentage of 1, and ER Allred score of 6 will have no risk points assigned. In contrast, a T3N1 tumor, Ki67 staining percentage of 25, and ER Allred score of 2 will have a total relapse score of 3 + 3 + 2 + 3 = 11[1].
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Points for RFS</th>
+                                        <th>Points for BCSS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Pathologic stage</td>
+                                        <td>0 for T1/T2<br>3 for T3/T4</td>
+                                        <td>0 for T1/T2<br>3 for T3/T4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nodal status</td>
+                                        <td>0 for negative<br>3 for positive</td>
+                                        <td>0 for negative<br>3 for positive</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ki-67 labeling index</td>
+                                        <td>
+                                            0 for 0–2.7%<br>
+                                            1 for &gt;2.7–7.3%<br>
+                                            1 for &gt;7.3–19.7%<br>
+                                            2 for &gt;19.7–53.1%<br>
+                                            3 for &gt;53.1%
+                                        </td>
+                                        <td>
+                                            0 for 0–2.7%<br>
+                                            1 for &gt;2.7–7.3%<br>
+                                            2 for &gt;7.3–19.7%<br>
+                                            3 for &gt;19.7–53.1%<br>
+                                            3 for &gt;53.1%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ER status (Allred score)</td>
+                                        <td>0 for score 3–8<br>3 for score 0–2</td>
+                                        <td>0 for score 3–8<br>3 for score 0–2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>
+                            <strong>Scoring and Interpretation:</strong><br>
+                            A hazard ratio in the range of 1–2 receives 1 risk point; a hazard ratio in the 2–2.5 range, 2 risk points; a hazard ratio greater than 2.5, 3 risk points. Best prognosis for PEPI score of 0; Intermediate for PEPI score of 1–3; Worse prognosis for PEPI score of 4 or higher[1].
+                        </p>
+                        <pre class="bg-light p-3">
+Example 1: T1N0, Ki67 = 1%, ER Allred = 6 → PEPI = 0
+Example 2: T3N1, Ki67 = 25%, ER Allred = 2 → PEPI = 3 (T) + 3 (N) + 2 (Ki67) + 3 (ER) = 11
+                        </pre>
+                        <p>
+                            Reference: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2556704/" target="_blank">Ellis MJ et al., J Natl Cancer Inst. 2008</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculatePEPI() {
+            // Tumor size points
+            const ptStage = document.getElementById('ptStage').value;
+            let ptPoints = 0;
+            if (ptStage === "T3or4") ptPoints = 3;
+
+            // Node status points
+            const pnStage = document.getElementById('pnStage').value;
+            let pnPoints = 0;
+            if (pnStage === "positive") pnPoints = 3;
+
+            // Ki67 points (RFS version)
+            const ki67 = Math.min(100, Math.max(0, parseFloat(document.getElementById('ki67').value) || 0));
+            let ki67Points = 0;
+            if (ki67 > 2.7 && ki67 <= 7.3) ki67Points = 1;
+            else if (ki67 > 7.3 && ki67 <= 19.7) ki67Points = 1;
+            else if (ki67 > 19.7 && ki67 <= 53.1) ki67Points = 2;
+            else if (ki67 > 53.1) ki67Points = 3;
+
+            // ER Allred score points
+            const erAllred = Math.min(8, Math.max(0, parseInt(document.getElementById('erAllred').value) || 0));
+            let erPoints = 0;
+            if (erAllred <= 2) erPoints = 3;
+
+            // Calculate total PEPI score
+            const pepi = ptPoints + pnPoints + ki67Points + erPoints;
+
+            document.getElementById('pepiResult').textContent = pepi;
+            document.querySelector('.result-alert').style.display = 'block';
+
+            // Risk group
+            let risk = '';
+            if (pepi === 0) risk = "Best prognosis (PEPI score 0)";
+            else if (pepi >= 1 && pepi <= 3) risk = "Intermediate prognosis (PEPI score 1–3)";
+            else risk = "Worse prognosis (PEPI score ≥4)";
+            document.getElementById('riskGroup').textContent = risk;
+        }
+
+        // Input validation (real-time clamping)
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const max = parseFloat(this.max);
+                const min = parseFloat(this.min);
+                let value = parseFloat(this.value);
+                if (!isNaN(value)) {
+                    if (value > max) this.value = max;
+                    if (value < min) this.value = min;
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
