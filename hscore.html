@@ -1,103 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>H-Score Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #fdeef3, #f9dfe8);
-      padding: 40px;
-      max-width: 700px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin: 15px 0 5px;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-      font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    nav {
-      background-color: #fff;
-      padding: 10px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #007bff;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H-score Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f6f8fa;
+        }
+        .calculator-container { 
+            max-width: 800px; 
+            margin: 2rem auto; 
+            padding: 20px; 
+        }
+        .form-group { 
+            margin-bottom: 1.2rem; 
+        }
+        .result-alert { 
+            display: none; 
+            margin-top: 1.5rem; 
+        }
+        input[type="number"] { 
+            max-width: 200px; 
+        }
+        .accordion-button:not(.collapsed) { 
+            color: #0d6efd; 
+            background-color: #e7f1ff; 
+        }
+        pre.bg-light { 
+            white-space: pre-wrap; 
+        }
+    </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="magee.html">Magee</a>
-    <a href="hscore.html">H-Score</a>
-    <a href="npi.html">NPI</a>
-    <a href="pepi.html">PEPI</a>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">Home</a>
+        </div>
+    </nav>
 
-  <h1>H-Score Calculator</h1>
-  <p>This score combines staining intensity and percentage of cells to estimate immunohistochemical expression (range: 0–300).</p>
-  <label>Percent with No Staining (0):</label>
-  <input type="number" id="s0" min="0" max="100">
-  <label>Percent with Weak Staining (1+):</label>
-  <input type="number" id="s1" min="0" max="100">
-  <label>Percent with Moderate Staining (2+):</label>
-  <input type="number" id="s2" min="0" max="100">
-  <label>Percent with Strong Staining (3+):</label>
-  <input type="number" id="s3" min="0" max="100">
-  <button onclick="calculateHScore()">Calculate H-Score</button>
-  <div class="result" id="result">
-<div style="margin-top: 15px;">
-  <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank"
-     style="display:inline-block; padding: 8px 14px; font-size: 14px; background-color: #007bff; color: white; border-radius: 6px; text-decoration: none;">
-    More Information
-  </a>
-</div>
+    <div class="calculator-container">
+        <h2>H-score Calculator</h2>
+        <p>
+            Calculates the semi-quantitative immunohistochemical H-score for ER, PR, or other stains. The H-score is the sum of the percent staining multiplied by intensity (0–3). Range: 0–300.
+        </p>
+        
+        <form id="hscoreForm">
+            <div class="form-group">
+                <label>Percentage of cells with <strong>no staining</strong> (0+):</label>
+                <input type="number" class="form-control" id="none" min="0" max="100" step="1" required>
+            </div>
+            <div class="form-group">
+                <label>Percentage of cells with <strong>weak intensity</strong> (1+):</label>
+                <input type="number" class="form-control" id="weak" min="0" max="100" step="1" required>
+            </div>
+            <div class="form-group">
+                <label>Percentage of cells with <strong>moderate intensity</strong> (2+):</label>
+                <input type="number" class="form-control" id="moderate" min="0" max="100" step="1" required>
+            </div>
+            <div class="form-group">
+                <label>Percentage of cells with <strong>strong intensity</strong> (3+):</label>
+                <input type="number" class="form-control" id="strong" min="0" max="100" step="1" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="calculateHScore()">Calculate</button>
+            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://www.pathologyoutlines.com/topic/breastmarkerhscore.html', '_blank')">More Information</button>
+        </form>
 
-</div>
-  <script>
-    function calculateHScore() {
-      const s0 = parseFloat(document.getElementById('s0').value) || 0;
-      const s1 = parseFloat(document.getElementById('s1').value) || 0;
-      const s2 = parseFloat(document.getElementById('s2').value) || 0;
-      const s3 = parseFloat(document.getElementById('s3').value) || 0;
-      const total = s0 + s1 + s2 + s3;
-      if (total > 100) {
-        document.getElementById('result').innerText = 'Total percentage cannot exceed 100%.';
-        return;
-      }
-      const score = (1 * s1) + (2 * s2) + (3 * s3);
-      document.getElementById('result').innerText = 'H-Score:<a href='https://pubmed.ncbi.nlm.nih.gov/' target='_blank' style='color:#007bff; font-weight: normal; margin-left: 8px;'>Learn more</a> ' + score.toFixed(2);
-    }
-  document.getElementById('result').innerText = 'H-Score result';
-</script>
+        <div class="result-alert alert alert-primary" role="alert">
+            <h4>H-score: <span id="hscoreResult">-</span></h4>
+            <p class="mb-0" id="sumCheck"></p>
+        </div>
+
+        <div class="accordion mt-4" id="infoAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#infoCollapse" aria-expanded="true">
+                        More information
+                    </button>
+                </h2>
+                <div id="infoCollapse" class="accordion-collapse collapse show"
+                     data-bs-parent="#infoAccordion">
+                    <div class="accordion-body">
+                        <p>
+                            Histochemical or H-score is a semi-quantitative immunohistochemical score which details the percentage of positive cells showing none, weak, moderate, or strong staining. The score is given as the sum of the percent staining multiplied by an ordinal value corresponding to the intensity level (0=none, 1=weak, 2=moderate, 3=strong). With four intensity levels, the resulting score ranges from 0 (no staining in the tumor) to 300 (diffuse intense staining of the tumor). It is often used in the context of reporting semi-quantitative ER and PR results but could be used for reporting any immunohistochemical stain. For cases that are reported descriptively, H-score could be estimated from the description. For example, a tumor showing weak to moderate nuclear reactivity in all the cells, estimated H-score would be 150 (i.e. 50% with 1+ intensity and 50% with 2+ intensity). In contrast, a tumor reported as showing strong reactivity in 80% of the tumor cells, the estimated H-score would be 240 (80*3). Although not as accurate as actually calculating the score, an estimation could be useful when actual H-score is not mentioned in the pathology report.
+                        </p>
+                        <pre class="bg-light p-3">
+Formula:
+H-score = (0 × % of cells with no staining) + (1 × % with weak intensity) + (2 × % with moderate intensity) + (3 × % with strong intensity)
+                        </pre>
+                        <p>
+                            Example 1: 50% with 1+ intensity, 50% with 2+ intensity — H-score = (1×50) + (2×50) = 150<br>
+                            Example 2: 80% with 3+ intensity — H-score = (3×80) = 240
+                        </p>
+                        <p>
+                            Reference: <a href="https://www.pathologyoutlines.com/topic/breastmarkerhscore.html" target="_blank">PathologyOutlines: H-score</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateHScore() {
+            const none = Math.min(100, Math.max(0, parseInt(document.getElementById('none').value) || 0));
+            const weak = Math.min(100, Math.max(0, parseInt(document.getElementById('weak').value) || 0));
+            const moderate = Math.min(100, Math.max(0, parseInt(document.getElementById('moderate').value) || 0));
+            const strong = Math.min(100, Math.max(0, parseInt(document.getElementById('strong').value) || 0));
+            const total = none + weak + moderate + strong;
+
+            // H-score formula
+            const hscore = (0 * none) + (1 * weak) + (2 * moderate) + (3 * strong);
+
+            document.getElementById('hscoreResult').textContent = hscore;
+            document.querySelector('.result-alert').style.display = 'block';
+            if (total !== 100) {
+                document.getElementById('sumCheck').textContent = "Warning: The percentages do not add up to 100%.";
+            } else {
+                document.getElementById('sumCheck').textContent = "";
+            }
+        }
+
+        // Input validation (real-time clamping)
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const max = parseInt(this.max);
+                const min = parseInt(this.min);
+                let value = parseInt(this.value);
+                if (!isNaN(value)) {
+                    if (value > max) this.value = max;
+                    if (value < min) this.value = min;
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
