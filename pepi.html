@@ -141,7 +141,7 @@
                         </div>
                         <p>
                             <strong>Scoring and Interpretation:</strong><br>
-                            A hazard ratio in the range of 1–2 receives 1 risk point; a hazard ratio in the 2–2.5 range, 2 risk points; a hazard ratio greater than 2.5, 3 risk points. Best prognosis for PEPI score of 0; Intermediate for PEPI score of 1–3; Worse prognosis for PEPI score of 4 or higher[1].
+                            A hazard ratio in the range of 1–2 receives 1 risk point; a hazard ratio in the 2–2.5 range, 2 risk points; a hazard ratio greater than 2.5, 3 risk points. Best prognosis for PEPI score of 0; Intermediate for PEPI score of 1–3; Worse prognosis for PEPI score of 4 or higher.
                         </p>
                     </div>
                 </div>
@@ -181,11 +181,11 @@
             document.querySelector('.result-alert').style.display = 'block';
 
             // Risk group
-            let risk = '';
-            if (pepi === 0) risk = "Best prognosis (PEPI score 0)";
-            else if (pepi >= 1 && pepi <= 3) risk = "Intermediate prognosis (PEPI score 1–3)";
-            else risk = "Worse prognosis (PEPI score ≥4)";
-            document.getElementById('riskGroup').textContent = risk;
+            // let risk = '';
+            // if (pepi === 0) risk = "Best prognosis (PEPI score 0)";
+            // else if (pepi >= 1 && pepi <= 3) risk = "Intermediate prognosis (PEPI score 1–3)";
+            // else risk = "Worse prognosis (PEPI score ≥4)";
+            // document.getElementById('riskGroup').textContent = risk;
         }
 
         // Input validation (real-time clamping)
