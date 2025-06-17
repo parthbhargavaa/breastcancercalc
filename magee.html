@@ -29,7 +29,7 @@
 
     <div class="calculator-container">
         <h2>Magee Equations Calculator</h2>
-        <p>Estimates Oncotype DX recurrence score using pathology data (ER-positive, HER2-negative breast cancer).</p>
+        <p>Estimates Oncotype DX recurrence score using pathology data in ER-positive, HER2-negative breast cancer.</p>
         
         <form id="mageeForm">
             <div class="form-group">
@@ -70,11 +70,10 @@
         </form>
 
         <div class="result-alert alert alert-primary" role="alert">
-            <h4>Average Recurrence Score: <span id="averageScore">-</span></h4>
+            <h4>Average Score: <span id="averageScore">-</span></h4>
             <p class="mb-0">Equation 1: <span id="eq1"></span></p>
             <p class="mb-0">Equation 2: <span id="eq2"></span></p>
             <p class="mb-0">Equation 3: <span id="eq3"></span></p>
-            <p class="mt-2">Interpretation: <span id="interpretation"></span></p>
         </div>
 
         <div class="clinical-info mt-4">
@@ -233,11 +232,10 @@ Total H-Score = 0 + 30 + 80 + 60 = 170
             const average = (eq1 + eq2 + eq3) / 3;
 
             // Display results
-            document.getElementById('eq1').textContent = eq1.toFixed(1);
-            document.getElementById('eq2').textContent = eq2.toFixed(1);
-            document.getElementById('eq3').textContent = eq3.toFixed(1);
-            document.getElementById('averageScore').textContent = average.toFixed(1);
-            document.getElementById('interpretation').textContent = getInterpretation(average);
+            document.getElementById('eq1').textContent = eq1.toFixed(2);
+            document.getElementById('eq2').textContent = eq2.toFixed(2);
+            document.getElementById('eq3').textContent = eq3.toFixed(2);
+            document.getElementById('averageScore').textContent = average.toFixed(2);
             document.querySelector('.result-alert').style.display = 'block';
         }
 
