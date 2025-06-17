@@ -223,7 +223,7 @@ Total H-Score = 0 + 30 + 80 + 60 = 170
                         getHer2Value(her2Status, 3) + 
                         (ki67 * 0.18649);
 
-            // Calculate average
+            // Calculate average only if all values are numbers
             const values = [eq1, eq2, eq3];
             const validValues = values.filter(v => !isNaN(v));
             const average = validValues.length === 3 ? (eq1 + eq2 + eq3) / 3 : NaN;
