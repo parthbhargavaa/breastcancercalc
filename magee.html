@@ -26,7 +26,6 @@
         </div>
     </nav>
 
-
     <div class="calculator-container">
         <h2>Magee Equations Calculator</h2>
         <p>Estimates Oncotype DX recurrence score using pathology data in ER-positive, HER2-negative breast cancer.</p>
@@ -36,17 +35,14 @@
                 <label>Nottingham Score (3-9)</label>
                 <input type="number" class="form-control" id="nottingham" min="3" max="9" step="1" required>
             </div>
-
             <div class="form-group">
                 <label>ER IHC Score (0-300)</label>
                 <input type="number" class="form-control" id="erIHC" min="0" max="300" step="1" required>
             </div>
-
             <div class="form-group">
                 <label>PR IHC Score (0-300)</label>
                 <input type="number" class="form-control" id="prIHC" min="0" max="300" step="1" required>
             </div>
-
             <div class="form-group">
                 <label>HER2 Status</label>
                 <select class="form-control" id="her2" required>
@@ -55,17 +51,14 @@
                     <option value="positive">Positive</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Tumor Size (cm)</label>
                 <input type="number" class="form-control" id="tumorSize" min="0.1" max="10.0" step="0.1" required>
             </div>
-
             <div class="form-group">
                 <label>Ki-67 Index (0-100)</label>
                 <input type="number" class="form-control" id="ki67" min="0" max="100" step="0.1" required>
             </div>
-
             <button type="button" class="btn btn-primary" onclick="calculateMagee()">Calculate</button>
         </form>
 
@@ -108,7 +101,6 @@
                             <p>
                                 Multiple linear regression analysis was performed to model the prediction of the oncotype DX® RS by Nottingham Score (range 3-9), Ki-67 labeling index (0-100), tumor size (in cm.), H-scores (range: 0-300) for ER and PR, and HER2 status (negative, equivocal or positive). Three models were built based on different hypotheses and data availability. The first regression model included all available parameters (including Ki-67 index) for prediction of oncotype DX® RS. The second regression model was similar to the first but did not include Ki-67. The third regression model included only semi-quantitative immunohistochemical expression levels for ER, PR, HER2 and Ki-67. These 3 equations are now commonly referred to as the Magee Equations™.
                             </p>
-
                             <h5>How to Use the Equations</h5>
                             <p>
                                 All the required data is generally present in the surgical pathology report. The hormone receptor results will require the semi-quantitative H-score. If not reported initially, this can be easily calculated by the case pathologist by reviewing the immunohistochemical (IHC) stain slides. H-scores are calculated based on percentage of positive cells showing none, weak, moderate, or strong staining intensity. The score is given as the sum of the percent staining multiplied by an ordinal value corresponding to the intensity level (0=none, 1=weak, 2=moderate, 3=strong). With four intensity levels, the resulting score ranges from 0 (no staining in the tumor) to 300 (diffuse intense staining).
@@ -147,7 +139,6 @@ Total H-Score = 0 + 30 + 80 + 60 = 170
 
                             <h5>Webinar on the Magee Equations</h5>
                             <p>February 20, 2025: Magee Equations Safe, Effective, and Underutilized 20250220 Bhargava</p>
-
                             <h5>References - Internal Publications</h5>
                             <ul>
                                 <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/40357830" target="_blank">Bedell M et al (2025)</a></li>
@@ -197,8 +188,12 @@ Total H-Score = 0 + 30 + 80 + 60 = 170
     </div>
 
     <script>
+        function formatResult(val) {
+            if (isNaN(val)) return "NA";
+            return val.toFixed(2);
+        }
+
         function calculateMagee() {
-            // Get and clamp input values
             const nottingham = Math.min(9, Math.max(3, parseFloat(document.getElementById('nottingham').value)));
             const erIHC = Math.min(300, Math.max(0, parseFloat(document.getElementById('erIHC').value)));
             const prIHC = Math.min(300, Math.max(0, parseFloat(document.getElementById('prIHC').value)));
@@ -208,34 +203,36 @@ Total H-Score = 0 + 30 + 80 + 60 = 170
 
             // Calculate individual equations
             const eq1 = 15.31385 + 
-                      (nottingham * 1.4055) + 
-                      (erIHC * -0.01924) + 
-                      (prIHC * -0.02925) + 
-                      getHer2Value(her2Status, 1) + 
-                      (tumorSize * 0.78677) + 
-                      (ki67 * 0.13269);
+                        (nottingham * 1.4055) + 
+                        (erIHC * -0.01924) + 
+                        (prIHC * -0.02925) + 
+                        getHer2Value(her2Status, 1) + 
+                        (tumorSize * 0.78677) + 
+                        (ki67 * 0.13269);
 
             const eq2 = 18.8042 + 
-                      (nottingham * 2.34123) + 
-                      (erIHC * -0.03749) + 
-                      (prIHC * -0.03065) + 
-                      getHer2Value(her2Status, 2) + 
-                      (tumorSize * 0.04267);
+                        (nottingham * 2.34123) + 
+                        (erIHC * -0.03749) + 
+                        (prIHC * -0.03065) + 
+                        getHer2Value(her2Status, 2) + 
+                        (tumorSize * 0.04267);
 
             const eq3 = 24.30812 + 
-                      (erIHC * -0.02177) + 
-                      (prIHC * -0.02884) + 
-                      getHer2Value(her2Status, 3) + 
-                      (ki67 * 0.18649);
+                        (erIHC * -0.02177) + 
+                        (prIHC * -0.02884) + 
+                        getHer2Value(her2Status, 3) + 
+                        (ki67 * 0.18649);
 
             // Calculate average
-            const average = (eq1 + eq2 + eq3) / 3;
+            const values = [eq1, eq2, eq3];
+            const validValues = values.filter(v => !isNaN(v));
+            const average = validValues.length === 3 ? (eq1 + eq2 + eq3) / 3 : NaN;
 
             // Display results
-            document.getElementById('eq1').textContent = eq1.toFixed(2);
-            document.getElementById('eq2').textContent = eq2.toFixed(2);
-            document.getElementById('eq3').textContent = eq3.toFixed(2);
-            document.getElementById('averageScore').textContent = average.toFixed(2);
+            document.getElementById('eq1').textContent = formatResult(eq1);
+            document.getElementById('eq2').textContent = formatResult(eq2);
+            document.getElementById('eq3').textContent = formatResult(eq3);
+            document.getElementById('averageScore').textContent = formatResult(average);
             document.querySelector('.result-alert').style.display = 'block';
         }
 
@@ -248,19 +245,12 @@ Total H-Score = 0 + 30 + 80 + 60 = 170
             return values[equationNum][status];
         }
 
-        function getInterpretation(score) {
-            if (score < 18) return 'Low recurrence risk';
-            if (score <= 30) return 'Intermediate recurrence risk';
-            return 'High recurrence risk';
-        }
-
         // Input validation
         document.querySelectorAll('input[type="number"]').forEach(input => {
             input.addEventListener('input', function() {
                 const max = parseFloat(this.max);
                 const min = parseFloat(this.min);
                 let value = parseFloat(this.value);
-                
                 if (!isNaN(value)) {
                     if (value > max) this.value = max;
                     if (value < min) this.value = min;
