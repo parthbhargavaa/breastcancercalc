@@ -17,6 +17,14 @@
             color: #0d6efd;
             letter-spacing: 0.01em;
         }
+        .acknowledgements-title {
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #000;
+            letter-spacing: 0.01em;
+        }
         .card.h-100 {
             min-height: 210px;
             display: flex;
@@ -33,8 +41,13 @@
             background-color: #e83e8c !important;
             border-color: #e83e8c !important;
         }
-        .acknowledgements {
-            color: #000 !important;
+        .disclaimer-section {
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+            font-size: 0.97rem;
+            color: #6c757d;
+            font-style: italic;
+            text-align: center;
         }
         @media (max-width: 767px) {
             .card.h-100 {
@@ -110,15 +123,16 @@
 
         <hr class="my-4">
 
-        <div class="section-title">Acknowledgements</div>
-        <p class="acknowledgements">
+        <div class="acknowledgements-title">Acknowledgements</div>
+        <p>
             We thank the clinicians, scientists, and investigators who have created these tools and made them available for anyone to use.
         </p>
-
-        <div class="alert alert-warning" role="alert">
-            These calculators should only be used by medical professionals who understand their usefulness and limitations. Medical professionals should use these calculators at their own discretion and this information should not be used for the diagnosis or treatment of any health problem or disease. The information is not intended to replace clinical judgment or guide individual patient care in any manner and is not provided in the course of a professional relationship between a health care provider and a patient. The website creators are not liable for any direct, indirect, incidental, special, consequential or punitive damages arising in any way from the actions taken by medical professionals based on the information provided by the calculators or any other information set forth herein. The creators of this website hereby disclaim any warranty of any kind, express or implied, including but not limited to the implied warranties of title, noninfringement, merchantability and fitness for a particular use or purpose.
-        </div>
     </div>
+
+    <section class="disclaimer-section">
+        These calculators should only be used by medical professionals who understand their usefulness and limitations. Medical professionals should use these calculators at their own discretion and this information should not be used for the diagnosis or treatment of any health problem or disease. The information is not intended to replace clinical judgment or guide individual patient care in any manner and is not provided in the course of a professional relationship between a health care provider and a patient. The website creators are not liable for any direct, indirect, incidental, special, consequential or punitive damages arising in any way from the actions taken by medical professionals based on the information provided by the calculators or any other information set forth herein. The creators of this website hereby disclaim any warranty of any kind, express or implied, including but not limited to the implied warranties of title, noninfringement, merchantability and fitness for a particular use or purpose.
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
