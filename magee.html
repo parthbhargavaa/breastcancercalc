@@ -17,13 +17,25 @@
             margin: 0;
             background: transparent;
             min-height: 100vh;
+            overflow-y: auto !important;
         }
         .calculator-container { max-width: 800px; margin: 2rem auto; padding: 20px; }
         .form-group { margin-bottom: 1.2rem; }
         .result-alert { display: none; margin-top: 1.5rem; }
         input[type="number"] { max-width: 200px; }
         .clinical-info img { max-width: 100%; height: auto; margin-bottom: 1rem; }
-        .accordion-button:not(.collapsed) { color: #0d6efd; background-color: #e7f1ff; }
+        .accordion-button,
+        .accordion-button:not(.collapsed) {
+            color: #fff !important;
+            background-color: #e83e8c !important;
+        }
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.25rem rgba(232, 62, 140, 0.25);
+        }
+        .accordion-collapse {
+            overflow: visible !important;
+            max-height: none !important;
+        }
         pre.bg-light { white-space: pre-wrap; }
         .btn-primary,
         .btn-primary:active,
@@ -110,6 +122,7 @@
                          data-bs-parent="#clinicalAccordion">
                         <div class="accordion-body">
                             <!-- ... (rest of your summary content) ... -->
+                            <p>This is where your summary content goes.</p>
                         </div>
                     </div>
                 </div>
