@@ -121,8 +121,105 @@
                     <div id="moreInfo" class="accordion-collapse collapse show"
                          data-bs-parent="#clinicalAccordion">
                         <div class="accordion-body">
-                            <!-- ... (rest of your summary content) ... -->
-                            <p>This is where your summary content goes.</p>
+                            <img src="/MageeDecisionAlgorithm.png" alt="Magee Decision Algorithm Flowchart" class="img-fluid mb-3">
+
+                            <h5>Magee Decision Algorithm™</h5>
+                            <p>
+                                The Magee Decision Algorithm™ helps in triaging cases for molecular testing. Use Magee Equation results and mitotic activity score (part of tumor grading) to triage cases.
+                            </p>
+                            <ul>
+                                <li><strong>Could safely forgo molecular testing:</strong> All scores &lt;18, or 18-25 with mitosis score 1</li>
+                                <li><strong>Consider sending:</strong> Any score &gt;25 or 18-25 with mitosis score ≥2</li>
+                            </ul>
+
+                            <h5>Background</h5>
+                            <p>
+                                Oncotype DX® (Genomic Health Inc. Redwood City, CA), is a commercial assay, frequently used by oncologists for making chemotherapy decisions. It is a quantitative reverse transcription polymerase chain reaction based assay, used to estimate the risk of distant recurrence for patients with ER positive, lymph node negative breast cancers. It is reported as a numerical score (recurrence score or RS) ranging from 0-100. At test inception, the risk categories were defined as low risk (LR; &lt;18), intermediate risk (IR; 18-30), and high risk (HR; ≥31). In the TAILORx trial, endocrine therapy was non-inferior to chemoendocrine therapy in the analysis of invasive disease-free survival for patients (age &gt;50 years) with RS of 11-25. In a pilot proof of principle study from this institution, it was reported that standard histopathologic factors and immunohistochemical markers can be used to estimate the recurrence score (original Magee equation; Mod Pathol. 2008;21:1255-1261). Subsequently, new Magee Equations were derived using a much larger database of over 800 cases that were sent for clinical oncotype DX® testing to Genomic Health as per oncologists’ request. These new Magee Equations were validated on a separate set of over 200 cases, again sent for clinical oncotype DX® testing to Genomic Health as per oncologists’ request (new Magee Equations; Mod Pathol. 2013;26:658-664).
+                            </p>
+
+                            <h5>How the New Magee Equations Were Derived</h5>
+                            <p>
+                                Multiple linear regression analysis was performed to model the prediction of the oncotype DX® RS by Nottingham Score (range 3-9), Ki-67 labeling index (0-100), tumor size (in cm.), H-scores (range: 0-300) for ER and PR, and HER2 status (negative, equivocal or positive). Three models were built based on different hypotheses and data availability. The first regression model included all available parameters (including Ki-67 index) for prediction of oncotype DX® RS. The second regression model was similar to the first but did not include Ki-67. The third regression model included only semi-quantitative immunohistochemical expression levels for ER, PR, HER2 and Ki-67. These 3 equations are now commonly referred to as the Magee Equations™.
+                            </p>
+                            <h5>How to Use the Equations</h5>
+                            <p>
+                                All the required data is generally present in the surgical pathology report. The hormone receptor results will require the semi-quantitative H-score. If not reported initially, this can be easily calculated by the case pathologist by reviewing the immunohistochemical (IHC) stain slides. H-scores are calculated based on percentage of positive cells showing none, weak, moderate, or strong staining intensity. The score is given as the sum of the percent staining multiplied by an ordinal value corresponding to the intensity level (0=none, 1=weak, 2=moderate, 3=strong). With four intensity levels, the resulting score ranges from 0 (no staining in the tumor) to 300 (diffuse intense staining).
+                            </p>
+                            <pre class="bg-light p-3">
+Example:
+10% negative → 0×10 = 0
+30% weak → 1×30 = 30
+40% moderate → 2×40 = 80
+20% strong → 3×20 = 60
+Total H-Score = 0 + 30 + 80 + 60 = 170
+                            </pre>
+                            <h6>HER2 status (for purposes of the Magee Equations) should be classified as shown below:</h6>
+                            <ul>
+                                <li><strong>HER2 negative:</strong> HER2 IHC score 0, IHC score 1+, and IHC score 2+ with HER2 copies per cell less than 4 by FISH</li>
+                                <li><strong>HER2 positive:</strong> HER2 IHC score of 3+, and HER2 IHC score of 2+ with HER2 copies per cell of 6 or more by FISH</li>
+                                <li><strong>HER2 equivocal:</strong> HER2 IHC score of 2+ with HER2 copies per cell of 4 to less than 6 by FISH</li>
+                            </ul>
+                            <p>
+                                Although 2007 ASCO/CAP HER2 guideline criteria were utilized for classification of cases for initial development and validation, the ASCO/CAP HER2 classification criteria have changed over the years. In the neoadjuvant study assessing the chemopredictiveness of Magee Equation 3, the above criteria for HER2 status were utilized (Mod Pathol. 2017;30:1078-1085. PMID: 28548119). Once all information is present, it should be inserted in their respective fields. Once all necessary fields have valid values, all three Magee Equations will automatically calculate.
+                            </p>
+                            <p>
+                                An algorithmic approach (Magee Decision Algorithm™ as illustrated above) to utilize molecular testing in primary breast cancer is discussed in the following publication: <a href="https://www.ncbi.nlm.nih.gov/pubmed/30395177" target="_blank">Bhargava R, et al. 2019</a>. For further validation of Magee Decision Algorithm™, please see: <a href="https://www.ncbi.nlm.nih.gov/pubmed/32203092" target="_blank">Bhargava R, et al. 2020</a>.
+                            </p>
+
+                            <h5>Neoadjuvant Chemotherapy and Magee Equation 3 (ME3)</h5>
+                            <p>
+                                The pathologic complete response rate (pCR) in ER+/HER2-negative tumors increases with increasing ME3 score. Based on available data (PMID: 28548119 and 32661297), the estimated pCR rate is as follows:
+                            </p>
+                            <ul>
+                                <li>ME3 score &lt;18: pCR rate of 0%</li>
+                                <li>ME3 score 18-25: pCR rate of &lt;5%</li>
+                                <li>ME3 score of &gt;25 but &lt;31: pCR rate of 14%</li>
+                                <li>ME3 score of 31 or higher: pCR rate of 35 to 40%</li>
+                            </ul>
+
+                            <h5>Webinar on the Magee Equations</h5>
+                            <p>February 20, 2025: Magee Equations Safe, Effective, and Underutilized 20250220 Bhargava</p>
+                            <h5>References - Internal Publications</h5>
+                            <ul>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/40357830" target="_blank">Bedell M et al (2025)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/40379596" target="_blank">Soran A et al (2025)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/36165933" target="_blank">Bhargava R et al (2023)</a></li>
+                                <li><a href="https://pubmed.ncbi.nlm.nih.gov/32661297/" target="_blank">Bhargava R et al (2020)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/32203092" target="_blank">Bhargava R et al (2020)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/32285033" target="_blank">Soran A et al (2020)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/30395177" target="_blank">Bhargava R et al (2019)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/29920746" target="_blank">Dabbs DJ et al (2018)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/28548119" target="_blank">Farrugia DJ et al (2017)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/28393310" target="_blank">Bhargava R (2017)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/23503643" target="_blank">Klein ME et al (2013)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/18360352" target="_blank">Flanagan M et al (2008)</a></li>
+                            </ul>
+                            <h5>References - External Publications</h5>
+                            <ul>
+                                <li><a href="https://pubmed.ncbi.nlm.nih.gov/39924087/" target="_blank">Vazquez TP et al (2025)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/38952295" target="_blank">Lagerstrom I et al (2025)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/38254828" target="_blank">Paiva CE et al (2024)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/37901046" target="_blank">Oprea AL et al (2023)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/36930555" target="_blank">Lujan M et al (2023)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/37453958" target="_blank">Mohamed A et al (2023)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/36765860" target="_blank">Turner BM et al (2023)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/35775006" target="_blank">Li H et al (2022)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/35486808" target="_blank">Li F et al (2022)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/32951186" target="_blank">Glasgow A et al (2021)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/33558657" target="_blank">Slembrouck L et al (2021)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/33245987" target="_blank">Remoué A et al (2021)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/31551182" target="_blank">Robertson SJ et al (2020)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/31287198" target="_blank">De Lima MAG et al (2019)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/31199586" target="_blank">Turner BM et al (2019)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/30672056" target="_blank">Robertson SJ et al (2019)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/30084931" target="_blank">Hou Y et al (2018)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/29691722" target="_blank">Sughayer M et al (2018)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/28898988" target="_blank">Hou Y et al (2017)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/28449064" target="_blank">Hou Y et al (2017)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/28064383" target="_blank">Harowicz MR et al (2017)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/27595437" target="_blank">Chen YY et al (2016)</a></li>
+                                <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/25932962" target="_blank">Turner BM et al (2015)</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
