@@ -6,35 +6,55 @@
     <title>H-score Calculator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        html, body {
+            min-height: 100%;
+            height: auto;
+        }
+        html {
+            background: linear-gradient(to bottom, pink 0%, white 100%);
+        }
         body {
-            background: #f6f8fa;
+            margin: 0;
+            background: transparent;
+            min-height: 100vh;
+            overflow-y: auto !important;
         }
-        .calculator-container { 
-            max-width: 800px; 
-            margin: 2rem auto; 
-            padding: 20px; 
+        .calculator-container { max-width: 800px; margin: 2rem auto; padding: 20px; }
+        .form-group { margin-bottom: 1.2rem; }
+        .result-alert { display: none; margin-top: 1.5rem; }
+        input[type="number"] { max-width: 200px; }
+        .accordion-button,
+        .accordion-button:not(.collapsed) {
+            color: #fff !important;
+            background-color: #e83e8c !important;
         }
-        .form-group { 
-            margin-bottom: 1.2rem; 
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.25rem rgba(232, 62, 140, 0.25);
         }
-        .result-alert { 
-            display: none; 
-            margin-top: 1.5rem; 
+        .accordion-collapse {
+            overflow: visible !important;
+            max-height: none !important;
         }
-        input[type="number"] { 
-            max-width: 200px; 
+        pre.bg-light { white-space: pre-wrap; }
+        .btn-primary,
+        .btn-primary:active,
+        .btn-primary:focus,
+        .btn-primary:hover {
+            background-color: #e83e8c !important;
+            border-color: #e83e8c !important;
         }
-        .accordion-button:not(.collapsed) { 
-            color: #0d6efd; 
-            background-color: #e7f1ff; 
+        .btn-outline-secondary {
+            border-color: #e83e8c;
+            color: #e83e8c;
         }
-        pre.bg-light { 
-            white-space: pre-wrap; 
+        .btn-outline-secondary:hover {
+            background-color: #e83e8c;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #e83e8c;">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand fw-bold mx-4" href="index.html">Home</a>
             <a class="navbar-brand fw-bold mx-4" href="frequently-used.html">Frequently Used</a>
@@ -43,7 +63,6 @@
             <a class="navbar-brand fw-bold mx-4" href="other-calculators.html">Other Calculators</a>
         </div>
     </nav>
-
 
     <div class="calculator-container">
         <h2>H-score Calculator</h2>
@@ -69,7 +88,7 @@
                 <input type="number" class="form-control" id="strong" min="0" max="100" step="1" required>
             </div>
             <button type="button" class="btn btn-primary" onclick="calculateHScore()">Calculate</button>
-            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC11141889/', '_blank')">More Information</button>
+            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC11141889/', '_blank')">Summary</button>
             <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/?term=H-score+immunohistochemistry', '_blank')">PubMed</button>
         </form>
 
@@ -91,6 +110,7 @@
                     <div class="accordion-body">
                         <p>
                             Histochemical or H-score is a semi-quantitative immunohistochemical score which details the percentage of positive cells showing none, weak, moderate, or strong staining. The score is given as the sum of the percent staining multiplied by an ordinal value corresponding to the intensity level (0=none, 1=weak, 2=moderate, 3=strong). With four intensity levels, the resulting score ranges from 0 (no staining in the tumor) to 300 (diffuse intense staining of the tumor). It is often used in the context of reporting semi-quantitative ER and PR results but could be used for reporting any immunohistochemical stain. For cases that are reported descriptively, H-score could be estimated from the description. For example, a tumor showing weak to moderate nuclear reactivity in all the cells, estimated H-score would be 150 (i.e. 50% with 1+ intensity and 50% with 2+ intensity). In contrast, a tumor reported as showing strong reactivity in 80% of the tumor cells, the estimated H-score would be 240 (80*3). Although not as accurate as actually calculating the score, an estimation could be useful when actual H-score is not mentioned in the pathology report.
+                            <br><br>
                             Example 1: 50% with 1+ intensity, 50% with 2+ intensity — H-score = (1×50) + (2×50) = 150<br>
                             Example 2: 80% with 3+ intensity — H-score = (3×80) = 240
                         </p>
