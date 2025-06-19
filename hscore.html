@@ -22,6 +22,7 @@
         .calculator-container { max-width: 800px; margin: 2rem auto; padding: 20px; }
         .form-group { margin-bottom: 1.2rem; }
         .result-alert { display: none; margin-top: 1.5rem; }
+        .error-alert { display: none; margin-top: 1.5rem; }
         input[type="number"] { max-width: 200px; }
         .accordion-button,
         .accordion-button:not(.collapsed) {
@@ -35,6 +36,7 @@
             overflow: visible !important;
             max-height: none !important;
         }
+        pre.bg-light { white-space: pre-wrap; }
         .btn-primary,
         .btn-primary:active,
         .btn-primary:focus,
@@ -50,22 +52,13 @@
             background-color: #e83e8c;
             color: white;
         }
-        .input-error {
-            border: 2px solid #dc3545;
-            background-color: #fff5f5;
-        }
-        .error-message {
-            color: #dc3545;
-            font-size: 0.875em;
-            display: none;
-        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #e83e8c;">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand fw-bold mx-4" href="index.html">Home</a>
-            <a class="navbar-brand fw-bold mx极4" href="frequently-used.html">Frequently Used</a>
+            <a class="navbar-brand fw-bold mx-4" href="frequently-used.html">Frequently Used</a>
             <a class="navbar-brand fw-bold mx-4" href="risk-assessment.html">Risk Assessment</a>
             <a class="navbar-brand fw-bold mx-4" href="recurrence-treatment.html">Recurrence/Treatment</a>
             <a class="navbar-brand fw-bold mx-4" href="other-calculators.html">Other Calculators</a>
@@ -82,31 +75,29 @@
             <div class="form-group">
                 <label>Percentage of cells with <strong>no staining</strong> (0+):</label>
                 <input type="number" class="form-control" id="none" min="0" max="100" step="1" required>
-                <div class="error-message" id="none-error">Percentage exceeds available value</div>
             </div>
             <div class="form-group">
                 <label>Percentage of cells with <strong>weak intensity</strong> (1+):</label>
                 <input type="number" class="form-control" id="weak" min="0" max="100" step="1" required>
-                <div class="error-message" id="weak-error">Percentage exceeds available value</div>
             </div>
             <div class="form-group">
                 <label>Percentage of cells with <strong>moderate intensity</strong> (2+):</label>
-                <input type="number" class="form-control" id="moderate" min="0"极 max="100" step="1" required>
-                <div class="error-message" id="moderate-error">Percentage exceeds available value</div>
+                <input type="number" class="form-control" id="moderate" min="0" max="100" step="1" required>
             </div>
             <div class="form-group">
                 <label>Percentage of cells with <strong>strong intensity</strong> (3+):</label>
                 <input type="number" class="form-control" id="strong" min="0" max="100" step="1" required>
-                <div class="error-message" id="strong-error">Percentage exceeds available value</div>
             </div>
-            <button type="button" class="btn btn-primary" id="calculateButton" onclick="calculateHScore()">Calculate</button>
-            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC11141889/', '_blank')">Summary</button>
+            <button type="button" class="btn btn-primary" onclick="calculateHScore()">Calculate</button>
+            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC11141889/', '_blank')">More Information</button>
             <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/?term=H-score+immunohistochemistry', '_blank')">PubMed</button>
         </form>
 
         <div class="result-alert alert alert-primary" role="alert">
             <h4>H-score: <span id="hscoreResult">-</span></h4>
-            <p class="mb-0" id="sumCheck"></p>
+        </div>
+        <div class="error-alert alert alert-danger" role="alert" id="sumError">
+            Error: The percentages must add up to exactly 100%.
         </div>
 
         <div class="accordion mt-4" id="infoAccordion">
@@ -133,88 +124,38 @@
     </div>
 
     <script>
-        // Global variables to track available percentage
-        let availablePercentage = 100;
-        const inputs = ['none', 'weak', 'moderate', 'strong'];
-        
-        // Initialize input validation
-        function initInputValidation() {
-            inputs.forEach(id => {
-                const input = document.getElementById(id);
-                input.addEventListener('input', function() {
-                    validatePercentageInput(this);
-                });
-            });
-        }
-        
-        // Validate percentage input in real-time
-        function validatePercentageInput(inputElement) {
-            const id = inputElement.id;
-            const value = parseInt(inputElement.value) || 0;
-            const errorElement = document.getElementById(`${id}-error`);
-            
-            // Calculate current total of other fields
-            const otherTotal = inputs
-                .filter(i => i !== id)
-                .reduce((sum, i) => sum + (parseInt(document.getElementById(i).value) || 0), 0);
-            
-            // Calculate available percentage
-            availablePercentage = 100 - otherTotal;
-            
-            // Validate current input
-            if (value > availablePercentage) {
-                inputElement.classList.add('input-error');
-                errorElement.style.display = 'block';
-                document.getElementById('calculateButton').disabled = true;
-            } else {
-                inputElement.classList.remove('input-error');
-                errorElement.style.display = 'none';
-                document.getElementById('calculateButton').disabled = false;
-            }
-            
-            // Update available percentage hints
-            updatePercentageHints(id);
-        }
-        
-        // Update percentage hints for other fields
-        function updatePercentageHints(currentId) {
-            inputs.forEach(id => {
-                if (id !== currentId) {
-                    const input = document.getElementById(id);
-                    const value = parseInt(input.value) || 0;
-                    const otherTotal = inputs
-                        .filter(i => i !== id)
-                        .reduce((sum, i) => sum + (parseInt(document.getElementById(i).value) || 0), 0);
-                    
-                    const available = 100 - otherTotal;
-                    input.placeholder = `Max: ${available}%`;
-                    
-                    if (value > available) {
-                        input.value = available;
-                    }
-                }
-            });
-        }
-        
-        // Calculate H-score
         function calculateHScore() {
             const none = parseInt(document.getElementById('none').value) || 0;
             const weak = parseInt(document.getElementById('weak').value) || 0;
             const moderate = parseInt(document.getElementById('moderate').value) || 0;
             const strong = parseInt(document.getElementById('strong').value) || 0;
-            
-            // H-score formula
-            const hscore = (0 * none) + (1 * weak) + (2 * moderate) + (3 * strong);
-            
-            document.getElementById('hscoreResult').textContent = hscore;
-            document.querySelector('.result-alert').style.display = 'block';
+            const total = none + weak + moderate + strong;
+
+            if (total !== 100) {
+                document.querySelector('.result-alert').style.display = 'none';
+                document.getElementById('sumError').style.display = 'block';
+                document.getElementById('hscoreResult').textContent = '-';
+            } else {
+                // H-score formula
+                const hscore = (0 * none) + (1 * weak) + (2 * moderate) + (3 * strong);
+                document.getElementById('hscoreResult').textContent = hscore;
+                document.querySelector('.result-alert').style.display = 'block';
+                document.getElementById('sumError').style.display = 'none';
+            }
         }
-        
-        // Initialize when page loads
-        window.onload = function() {
-            initInputValidation();
-            document.getElementById('calculateButton').disabled = true;
-        };
+
+        // Input validation (real-time clamping)
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const max = parseInt(this.max);
+                const min = parseInt(this.min);
+                let value = parseInt(this.value);
+                if (!isNaN(value)) {
+                    if (value > max) this.value = max;
+                    if (value < min) this.value = min;
+                }
+            });
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
