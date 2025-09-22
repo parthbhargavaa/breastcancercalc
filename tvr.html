@@ -122,15 +122,21 @@
                      data-bs-parent="#infoAccordion">
                     <div class="accordion-body">
                         <p>
-                            This calculator estimates tumor volume reduction in breast cancer patients after neoadjuvant therapy using the Magee method. It combines the measured post-therapy tumor bed dimension corrected for tumor cellularity relative to the pre-therapy biopsy to estimate residual tumor volume. The tumor volume reduction percentage is calculated as the difference between pre-therapy and revised tumor size, normalized by the pre-therapy tumor size.
+                            Tumor Volume Reduction (TVR) estimation using the Magee method provides a practical way to assess how much a breast tumor has shrunk after neoadjuvant therapy. Since tumor volume is difficult to measure precisely in three dimensions in routine clinical practice, this method uses the largest tumor dimension from gross pathology and adjusts it based on the tumor cellularity compared to the pre-therapy biopsy. The revised tumor size reflects the viable tumor remaining after treatment. 
                         </p>
                         <p>
-                            <strong>Formula:</strong><br/>
-                            Revised tumor size = Post-therapy tumor bed dimension × (Tumor cellularity ÷ 100)<br/>
-                            Tumor volume reduction (%) = ((Pre-therapy size - Revised tumor size) ÷ Pre-therapy size) × 100
+                            This approach helps pathologists and clinicians estimate treatment response quantitatively, which is important for treatment planning and prognosis. For example, a tumor with a large post-therapy fibrotic area but low cellularity may indicate a substantial therapy effect despite the size appearing large grossly. Conversely, a smaller tumor bed with high cellularity suggests less response.
                         </p>
                         <p>
-                            This method helps in assessing response to neoadjuvant therapy, aiding treatment planning and prognosis.
+                            Example 1: Pre-therapy size 4 cm, post-therapy size 2 cm with 30% cellularity<br/>
+                            (2 cm × 0.3 = 0.6 cm revised size) → TVR = ((4 - 0.6) / 4) × 100 = 85% reduction
+                        </p>
+                        <p>
+                            Example 2: Pre-therapy size 5 cm, post-therapy size 1.5 cm with 70% cellularity<br/>
+                            (1.5 cm × 0.7 = 1.05 cm revised size) → TVR = ((5 - 1.05) / 5) × 100 = 79% reduction
+                        </p>
+                        <p>
+                            This semi-quantitative estimator provides valuable insight when full volume measurements are not feasible.
                         </p>
                     </div>
                 </div>
@@ -159,15 +165,12 @@
 
             const revisedSize = postSize * (cellularity / 100);
             const reductionPercent = ((preSize - revisedSize) / preSize) * 100;
-
-            // Clamp the reduction percent between 0 and 100
             const clampedReduction = Math.max(0, Math.min(100, reductionPercent));
 
             document.getElementById('tvrResult').textContent = clampedReduction.toFixed(2);
             document.querySelector('.result-alert').style.display = 'block';
         }
 
-        // Real-time clamping for inputs
         document.querySelectorAll('input[type="number"]').forEach(input => {
             input.addEventListener('input', function() {
                 const max = parseFloat(this.max);
