@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tumor Volume Reduction Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        html, body {
+            min-height: 100%;
+            height: auto;
+        }
+        html {
+            background: linear-gradient(to bottom, pink 0%, white 100%);
+        }
+        body {
+            margin: 0;
+            background: transparent;
+            min-height: 100vh;
+            overflow-y: auto !important;
+        }
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .result-alert {
+            display: none;
+            margin-top: 1.5rem;
+        }
+        input[type="number"], select {
+            max-width: 200px;
+        }
+        .accordion-button,
+        .accordion-button:not(.collapsed) {
+            color: #fff !important;
+            background-color: #e83e8c !important;
+        }
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.25rem rgba(232, 62, 140, 0.25);
+        }
+        .accordion-collapse {
+            overflow: visible !important;
+            max-height: none !important;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+        pre.bg-light {
+            white-space: pre-wrap;
+        }
+        .btn-primary,
+        .btn-primary:active,
+        .btn-primary:focus,
+        .btn-primary:hover {
+            background-color: #e83e8c !important;
+            border-color: #e83e8c !important;
+        }
+        .btn-outline-secondary {
+            border-color: #e83e8c;
+            color: #e83e8c;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #e83e8c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #e83e8c;">
+        <div class="container-fluid justify-content-center">
+            <a class="navbar-brand fw-bold mx-4" href="index.html">Home</a>
+            <a class="navbar-brand fw-bold mx-4" href="frequently-used.html">Frequently Used</a>
+            <a class="navbar-brand fw-bold mx-4" href="risk-assessment.html">Risk Assessment</a>
+            <a class="navbar-brand fw-bold mx-4" href="recurrence-treatment.html">Recurrence/Treatment</a>
+            <a class="navbar-brand fw-bold mx-4" href="other-calculators.html">Other Calculators</a>
+        </div>
+    </nav>
+
+    <div class="calculator-container">
+        <h2>Tumor Volume Reduction Calculator</h2>
+        <p>
+            Estimates tumor size and volume reduction in the breast after neoadjuvant therapy using the Magee method. This tool calculates the percentage reduction based on pre-therapy tumor size and the revised tumor size corrected for cellularity after treatment.
+        </p>
+
+        <form id="tvrForm">
+            <div class="form-group">
+                <label>Pre-Therapy Maximum Tumor Dimension (cm):</label>
+                <input type="number" class="form-control" id="preTherapySize" min="0.1" max="20" step="0.1" required />
+            </div>
+            <div class="form-group">
+                <label>Post-Therapy Revised Tumor Dimension (cm):</label>
+                <input type="number" class="form-control" id="postTherapySize" min="0" max="20" step="0.1" required />
+            </div>
+            <div class="form-group">
+                <label>Percent Cellularity of Tumor (%):</label>
+                <input type="number" class="form-control" id="cellularity" min="0" max="100" step="1" required />
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="calculateTVR()">Calculate</button>
+            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://path.upmc.edu/onlinetools/ptvr.html', '_blank')">More Information</button>
+            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/?term=Magee+Tumor+Volume+Reduction', '_blank')">PubMed</button>
+        </form>
+
+        <div class="result-alert alert alert-primary" role="alert">
+            <h4>Tumor Volume Reduction Percentage: <span id="tvrResult">-</span>%</h4>
+        </div>
+
+        <div class="accordion mt-4" id="infoAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#infoCollapse" aria-expanded="true">
+                        Summary
+                    </button>
+                </h2>
+                <div id="infoCollapse" class="accordion-collapse collapse show"
+                     data-bs-parent="#infoAccordion">
+                    <div class="accordion-body">
+                        <p>
+                            This calculator estimates tumor volume reduction in breast cancer patients after neoadjuvant therapy using the Magee method. It combines the measured post-therapy tumor bed dimension corrected for tumor cellularity relative to the pre-therapy biopsy to estimate residual tumor volume. The tumor volume reduction percentage is calculated as the difference between pre-therapy and revised tumor size, normalized by the pre-therapy tumor size.
+                        </p>
+                        <p>
+                            <strong>Formula:</strong><br/>
+                            Revised tumor size = Post-therapy tumor bed dimension × (Tumor cellularity ÷ 100)<br/>
+                            Tumor volume reduction (%) = ((Pre-therapy size - Revised tumor size) ÷ Pre-therapy size) × 100
+                        </p>
+                        <p>
+                            This method helps in assessing response to neoadjuvant therapy, aiding treatment planning and prognosis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateTVR() {
+            const preSize = parseFloat(document.getElementById('preTherapySize').value) || 0;
+            const postSize = parseFloat(document.getElementById('postTherapySize').value) || 0;
+            const cellularity = parseFloat(document.getElementById('cellularity').value) || 0;
+
+            if (preSize < 0.1 || preSize > 20) {
+                alert("Pre-therapy tumor size must be between 0.1 and 20 cm");
+                return;
+            }
+            if (postSize < 0 || postSize > 20) {
+                alert("Post-therapy revised tumor size must be between 0 and 20 cm");
+                return;
+            }
+            if (cellularity < 0 || cellularity > 100) {
+                alert("Cellularity must be between 0 and 100%");
+                return;
+            }
+
+            const revisedSize = postSize * (cellularity / 100);
+            const reductionPercent = ((preSize - revisedSize) / preSize) * 100;
+
+            // Clamp the reduction percent between 0 and 100
+            const clampedReduction = Math.max(0, Math.min(100, reductionPercent));
+
+            document.getElementById('tvrResult').textContent = clampedReduction.toFixed(2);
+            document.querySelector('.result-alert').style.display = 'block';
+        }
+
+        // Real-time clamping for inputs
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const max = parseFloat(this.max);
+                const min = parseFloat(this.min);
+                let value = parseFloat(this.value);
+                if (!isNaN(value)) {
+                    if (value > max) this.value = max;
+                    if (value < min) this.value = min;
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
