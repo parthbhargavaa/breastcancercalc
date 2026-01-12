@@ -84,7 +84,7 @@
     <div class="calculator-container">
         <h2>Tumor Volume Reduction Calculator</h2>
         <p>
-            Estimates tumor size and volume reduction in the breast after neoadjuvant therapy using the Magee method. This tool calculates the percentage reduction based on pre-therapy tumor size and the revised tumor size corrected for cellularity after treatment.
+            Estimates tumor size and volume reduction in the breast after neoadjuvant therapy using the Magee method.
         </p>
 
         <form id="tvrForm">
@@ -93,7 +93,7 @@
                 <input type="number" class="form-control" id="preTherapySize" min="0.1" max="20" step="0.1" required />
             </div>
             <div class="form-group">
-                <label>Post-Therapy Revised Tumor Dimension (cm):</label>
+                <label>Gross Tumor Bed / Fibrotic Area Dimension (cm):</label>
                 <input type="number" class="form-control" id="postTherapySize" min="0" max="20" step="0.1" required />
             </div>
             <div class="form-group">
@@ -103,13 +103,13 @@
 
             <button type="button" class="btn btn-primary" onclick="calculateTVR()">Calculate</button>
             <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://path.upmc.edu/onlinetools/ptvr.html', '_blank')">More Information</button>
-            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/?term=Magee+Tumor+Volume+Reduction', '_blank')">PubMed</button>
+            <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/28548119/', '_blank')">PubMed</button>
         </form>
 
         <div class="result-alert alert alert-primary" role="alert">
             <h5>Revised tumor size after correcting for cellularity:</h5>
             <h4 class="mb-3"><span id="revisedSizeResult">-</span> cm</h4>
-            <h5>Estimated Primary Tumor Volume Reduction:</h5>
+            <h5>Percentage tumor size/volume reduction:</h5>
             <h4><span id="tvrResult">-</span>%</h4>
         </div>
 
@@ -125,15 +125,16 @@
                      data-bs-parent="#infoAccordion">
                     <div class="accordion-body">
                         <p>
-                            Tumor Volume Reduction (TVR) estimation using the Magee method provides a practical way to assess how much a breast tumor has shrunk after neoadjuvant therapy. This method uses the largest tumor dimension from gross pathology and adjusts it based on the tumor cellularity. 
+                            Ideally, one should use tumor size in all 3 dimensions for the most accurate determination of tumor volume reduction. However, accurate measurement of all 3 tumor dimensions are rarely available, therefore, the standard method described below for estimating tumor size/volume reduction uses the largest tumor dimension. Gross evaluation of the specimen is extremely important. The largest dimension of the gross tumor bed/fibrotic area should be specifically noted in the gross description of the pathology report. This area should be either entirely submitted (if small i.e. ≤ 3 cm) or sampled extensively (if large, i.e. > 3 cm), with sections serially submitted at 0.5 cm interval along the largest dimension. The entire region needs to be submitted regardless of the size if no tumor was detected on initial sections.
                         </p>
-                        <p><strong>Calculations:</strong></p>
-                        <ul>
-                            <li><strong>Revised Tumor Size:</strong> Post-therapy Dimension × Percent Cellularity.</li>
-                            <li><strong>Volume Reduction:</strong> 100 × (1 - (Revised Size / Pre-therapy Size)³).</li>
-                        </ul>
                         <p>
-                            This approach helps pathologists and clinicians estimate treatment response quantitatively. For example, a tumor with a large post-therapy fibrotic area but low cellularity may indicate a substantial therapy effect despite the size appearing large grossly.
+                            The tumor cellularity of the resection specimen should be compared with the pre-therapy biopsy. Specifically, the pre-therapy biopsy should be screened for de novo sclerosis and necrosis. If these areas are present in pre-therapy biopsy, then similar areas in post-therapy resection specimens should not be counted towards therapy related changes. After excluding these de novo changes, the resection specimen showing treatment related fibrosis should be compared to the cellularity of pre-therapy biopsy and the residual cellularity of the tumor bed is estimated. The therapy related stromal changes often have fibroelastosis rather than pure fibrosis.
+                        </p>
+                        <p>
+                            The revised tumor size is calculated by multiplying the largest dimension of gross tumor bed/fibrotic area with the tumor cellularity (compared to pre-therapy biopsy) of the resection specimen. The percentage tumor size/volume reduction is calculated by subtracting revised tumor size from pre-therapy size, divided by pre-therapy size times 100.
+                        </p>
+                        <p>
+                            Although this method may also be used for determining amount of response within the lymph nodes, the lack of accurate pre-therapy lymph node metastasis size precludes this application. However, presence or absence of tumor within lymph nodes at post-therapy resection specimen is enough to judge if pathologic response was complete or incomplete. Although immeasurable, if residual tumor is identified only in vascular spaces, the pathologic response should be considered as incomplete. However, this is an extremely rare phenomenon and if thorough examination of the breast is performed, generally an intraparenchymal component is also identified. In cases of inflammatory carcinoma where pre-therapy size is not available, the size of tumor-bed/fibrotic area on gross exam can be used to estimate the pre-therapy size.
                         </p>
                     </div>
                 </div>
@@ -155,16 +156,16 @@
             // 1. Calculate Revised Size
             const revisedSize = postSize * (cellularity / 100);
             
-            // 2. Calculate Volumetric Reduction: 100 * (1 - (revised/pre)^3)
-            const ratio = revisedSize / preSize;
-            const reductionPercent = (1 - Math.pow(ratio, 3)) * 100;
+            // 2. Calculate Percentage Reduction: (pre - revised) / pre * 100
+            const reductionPercent = ((preSize - revisedSize) / preSize) * 100;
             
             // Display Results
-            document.getElementById('revisedSizeResult').textContent = revisedSize.toFixed(1);
+            document.getElementById('revisedSizeResult').textContent = revisedSize.toFixed(2);
             document.getElementById('tvrResult').textContent = Math.round(reductionPercent);
             document.querySelector('.result-alert').style.display = 'block';
         }
 
+        // Real-time clamping for inputs
         document.querySelectorAll('input[type="number"]').forEach(input => {
             input.addEventListener('input', function() {
                 const max = parseFloat(this.max);
